@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Philíphe Bỉnh Translator</title>
+
+    <style>
+        body {
+            font-family: "Inter", Arial, sans-serif;
+            background: #f5f6fa;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #dcdde1;
+            font-size: 15px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        #result-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #dcdde1;
+            font-size: 15px;
+        }
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .json-output {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>⚜️ Philíphe Bỉnh Translator ⚜️</h1>
+
+<textarea id="inputText" placeholder="Nhập câu tiếng Việt hiện đại…"></textarea>
+<br>
+<button onclick="sendTranslate()">Dịch ngay</button>
+
+<div id="result-box" style="display:none;">
+    <div class="result-title">✅ Kết quả dịch</div>
+    <div id="translation" class="json-output"></div>
+
+    <div class="result-title" style="margin-top:20px;">📘 Giải thích</div>
+    <div id="explanation" class="json-output"></div>
+</div>
+
+<script>
+async function sendTranslate() {
+    const text = document.getElementById("inputText").value;
+    if (!text) return;
+
+    let res = await fetch("/translate", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ text })
+    });
+
+    let out = await res.json();
+
+    // extract
+    let translation = out.translation || "(không có dữ liệu)";
+    let explanation = out.explanation || "(không có dữ liệu)";
+
+    // remove ```json blocks if model returns them
+    translation = translation.replace(/```json/g, "").replace(/```/g, "");
+    explanation = explanation.replace(/```json/g, "").replace(/```/g, "");
+
+    // show
+    document.getElementById("result-box").style.display = "block";
+    document.getElementById("translation").textContent = translation;
+    document.getElementById("explanation").textContent = explanation;
+}
+</script>
+
+</body>
+</html>

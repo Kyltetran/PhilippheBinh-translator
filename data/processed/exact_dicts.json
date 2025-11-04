@@ -1,0 +1,497 @@
+{
+  "fixed_phrases": {
+    "Ai mạnh nấy được": "Mạnh ai nấy thắng, ai có quyền lực thì chiếm được lợi thế.",
+    "Bất tri kỷ tâm": "Không biết lòng mình, chỉ lo việc ngoài, thiếu tự tỉnh.",
+    "Cha làm quan nào thì con lại làm quan nấy": "Cha làm nghề gì, con nối nghiệp đó; ám chỉ hệ thống cha truyền con nối.",
+    "Chạy ngang chạy dọc": "Chỉ sự bận rộn, hoạt động khắp nơi.",
+    "Chiềng kêu": "Tiếng trống vang, báo hiệu lễ hội hoặc sự kiện lớn.",
+    "Cơm nặng áo dầy": "Chỉ người có phúc, sống sung túc, đủ đầy.",
+    "Công thần phiệt duyệt": "Quan lớn, người có công lao hiển hách, quyền uy trong triều.",
+    "Đi chu tâm chu, đi mã tâm mã": "Chỉ người không nhất quán, thay đổi lòng dạ, gió chiều nào che chiều ấy.",
+    "Độc dược khổ khẩu": "Thuốc đắng dã tật, lời thật mất lòng; cái tốt thường khó chịu nhưng có lợi.",
+    "Được cá bỏ nơm": "Đạt được điều mình muốn rồi thì bỏ phương tiện, không còn cần đến nữa.",
+    "Huệ̂t cư dạ xứ": "Phong tục man rợ: con giết cha mẹ già; ẩn dụ chỉ đạo đức suy đồi.",
+    "Khi thịnh khi suy": "Cuộc đời có lúc hưng thịnh, lúc suy tàn.",
+    "Mắt mờ cửa nhà": "Chỉ người bận rộn, lo toan nhiều việc trong nhà.",
+    "Miệng đắng lưỡi rắn": "Chỉ người độc miệng, thâm độc, nói lời cay nghiệt.",
+    "Nhẵn như gương": "Trơn tru, bóng bẩy, sạch sẽ; cũng có thể ẩn dụ người khéo léo, trơn tru.",
+    "Nhất phu nhất phụ": "Một vợ một chồng, trung thủy, đạo đức.",
+    "Non chẳng uốn, già bẻ gãy ngành": "Trẻ không dạy dỗ sớm thì lớn khó sửa nết.",
+    "Nuôi ong tay áo": "Nuôi kẻ phản bội, giúp người rồi bị hại lại.",
+    "Phaong ba bão táp": "Chỉ sóng gió, biến động lớn, khó khăn trùng trùng.",
+    "Phu sướng phụ tùy": "Đạo vợ chồng xưa: vợ theo chồng, phụ thuộc chồng.",
+    "Quan hình sát sắc": "Quan nghiêm khắc, xử lý công minh, cứng rắn.",
+    "Quan kỳ địch tác": "Kẻ địch bên cạnh, người đối lập hoặc cạnh tranh trực tiếp.",
+    "Quen thì dài dạ, lạ thì dài áo": "Thân quen thì dễ nói chuyện, xa lạ thì giữ kẽ.",
+    "Rễ bằng rễ bám": "Chỉ sự ràng buộc chặt chẽ, khó gỡ bỏ.",
+    "Sở tổn công lệnh": "Tổn hao công sức, vất vả vì công vụ.",
+    "Sói dữ ra lành": "Người xấu được cảm hóa trở nên hiền lành.",
+    "Tài yếu sức mọn": "Tự hạ mình, khiêm tốn, nói bản thân kém cỏi.",
+    "Tận lang vô kế": "Hết đường xoay xở, bế tắc, không còn kế nào khác.",
+    "Thập bát cuốc chư hầu": "Mười tám nước chư hầu cùng theo đạo; chỉ sự đồng lòng, quy thuận.",
+    "Thiên sơn vạn thủy": "Núi ngàn sông vạn, chỉ sự xa xôi, cách trở.",
+    "Trâu bò húc nhau thì ruồi muỗi phải khốn": "Kẻ yếu bị vạ lây khi người mạnh tranh chấp.",
+    "Trung ngôn nghịch nhĩ": "Lời ngay thẳng thường khó nghe, nhưng có lợi.",
+    "Vay công mượn nợ": "Chỉ nợ nần chồng chất, mắc ơn nghĩa khắp nơi.",
+    "Vạn vật chân nguyên": "Vạn vật có bản thể thật, chỉ chân lý vũ trụ, nguyên lý tối sơ."
+  },
+  "vocab_ancient_to_modern": {
+    "Bằng": "Còn như, còn",
+    "Bỏ vạ": "Gây vạ, để vạ cho",
+    "Bổn cuốc": "Bản quốc, nước mình",
+    "Cả và": "Cả, tất cả",
+    "Cáo": "Báo, nói với",
+    "Cậy": "Nhờ, nhờ cậy",
+    "Chiên": "Cừu",
+    "Chiềng": "Trình, thưa, bẩm",
+    "Cho liền": "Liên tục, thường xuyên",
+    "Chước": "Mưu, kế",
+    "Con": "Cuốn, quyển",
+    "Đức lác": "Mắng mỏ, nhiếc móc",
+    "Đàng sá": "Đường sá",
+    "Đe loi": "Dọa nạt",
+    "Đỉ gì": "cái gì / chút gì",
+    "Đoạn (mới)": "Xong (rồi mới), sau đó (mới)",
+    "Giả": "Giã biệt, tạm biệt, từ biệt",
+    "Gưởi": "Gửi",
+    "Hầu": "Gần, gần như",
+    "Kẻ chợ": "Kinh thành, thủ đô",
+    "Kẻ liệt": "Người bệnh",
+    "Kín nhiệm": "Bí mật, kín đáo",
+    "Làm chước": "Tìm cách, bày trò",
+    "Làm khốn": "Gây khó khăn, trở ngại, làm cho khốn đốn",
+    "Lang": "Lương",
+    "Mặc làoòng": "Mặc lòng, tùy ý, mặc kệ",
+    "Mắt, mắt mờ": "Đất, đất đỏ",
+    "Một": "Chỉ, duy chỉ",
+    "Một trật": "Một lần",
+    "Người": "Ngửi",
+    "Phải": "Gặp, mắc phải, bị",
+    "Phô": "Các, lũ, chúng",
+    "Phú": "Ban, cho",
+    "Phương chi": "Huống hồ",
+    "Ra": "Trở nên, thành ra",
+    "Rầy": "Nay",
+    "Ru": "Sao, hay sao",
+    "Saong le": "Tuy nhiên",
+    "Sốt mến": "Quý mến",
+    "Sở tổn": "Tốn kém",
+    "Thầy thầy": "Tất cả",
+    "Thầy cả": "Linh mục",
+    "Thượng vị": "Hoàng đế",
+    "Tràng": "Trường",
+    "Traọng": "Quan trọng, lớn",
+    "Tuan trẩy": "Định đi, định lên đường",
+    "Tuền": "Tuyền, toàn là",
+    "Tuệt": "Diệt, chấm dứt, hết",
+    "Vaóc": "Hàng dệt bằng to, có hoa văn"
+  },
+  "vocab_modern_to_ancient": {},
+  "sound_change_modern_to_ancient": {
+    "triều": {
+      "ancient": "trều",
+      "rule": "ê → iê",
+      "note": "Phức hóa nguyên âm đơn ê thành nguyên âm đôi iê"
+    },
+    "chiên": {
+      "ancient": "chên",
+      "rule": "ê → iê",
+      "note": "Phức hóa nguyên âm"
+    },
+    "chuyến": {
+      "ancient": "chuến",
+      "rule": "ê → iê",
+      "note": "Phức hóa nguyên âm"
+    },
+    "huyết": {
+      "ancient": "huét",
+      "rule": "ê → iê/uyê",
+      "note": "Phức hóa nguyên âm"
+    },
+    "huyện": {
+      "ancient": "huện",
+      "rule": "ê → iê/uyê",
+      "note": "Phức hóa nguyên âm"
+    },
+    "phiên": {
+      "ancient": "phén",
+      "rule": "ê → iê",
+      "note": "Phức hóa nguyên âm"
+    },
+    "duyệt": {
+      "ancient": "duyệt",
+      "rule": "ê → iê",
+      "note": "Biến thể iê hóa"
+    },
+    "huyền": {
+      "ancient": "huền",
+      "rule": "ê → iê",
+      "note": "Phức hóa nguyên âm"
+    },
+    "luyện": {
+      "ancient": "luện",
+      "rule": "ê → iê",
+      "note": "Phức hóa nguyên âm"
+    },
+    "rưới": {
+      "ancient": "rói",
+      "rule": "o → uơ/ươ",
+      "note": "Mở rộng nguyên âm o thành uơ"
+    },
+    "vuột/suốt": {
+      "ancient": "vọt",
+      "rule": "o → uơ/uô",
+      "note": "Phức hóa nguyên âm"
+    },
+    "ngược": {
+      "ancient": "ngóc",
+      "rule": "o → uơ/ươ",
+      "note": "Phức hóa nguyên âm"
+    },
+    "đều": {
+      "ancient": "điều",
+      "rule": "iê → i/ê",
+      "note": "Đơn hóa nguyên âm đôi"
+    },
+    "phết": {
+      "ancient": "phiết",
+      "rule": "iê → ê",
+      "note": "Đơn hóa nguyên âm đôi"
+    },
+    "thuê": {
+      "ancient": "thuyê",
+      "rule": "iê → ê",
+      "note": "Đơn hóa nguyên âm đôi"
+    },
+    "vịt": {
+      "ancient": "việt",
+      "rule": "iê → i",
+      "note": "Đơn hóa nguyên âm đôi"
+    },
+    "gửi": {
+      "ancient": "gởi",
+      "rule": "o → u",
+      "note": "Làm tròn môi nguyên âm"
+    },
+    "rưới/rửi": {
+      "ancient": "rổi",
+      "rule": "o → u",
+      "note": "Làm tròn môi nguyên âm"
+    },
+    "bồi": {
+      "ancient": "buôi",
+      "rule": "uô → ô/o",
+      "note": "Đơn hóa nguyên âm đôi"
+    },
+    "với": {
+      "ancient": "vuối",
+      "rule": "uô → ô/o",
+      "note": "Đơn hóa nguyên âm đôi"
+    },
+    "bặm": {
+      "ancient": "bạm",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm (a thành ă)"
+    },
+    "cắm": {
+      "ancient": "cám",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "đắm": {
+      "ancient": "đam",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "mắm": {
+      "ancient": "mâm",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "năm": {
+      "ancient": "nam",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "chẳng": {
+      "ancient": "cháng",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "đẳng": {
+      "ancient": "đắng",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "trắng": {
+      "ancient": "tráng",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "vắng": {
+      "ancient": "váng",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "chặt": {
+      "ancient": "chát",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "mặt": {
+      "ancient": "mát",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "sặt": {
+      "ancient": "sát",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "bắc": {
+      "ancient": "bác",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "đặc": {
+      "ancient": "đặc",
+      "rule": "a → ă",
+      "note": "Ổn định âm"
+    },
+    "rắc": {
+      "ancient": "rác",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "nắt": {
+      "ancient": "nát",
+      "rule": "a → ă",
+      "note": "Rút ngắn nguyên âm"
+    },
+    "đăng": {
+      "ancient": "đong",
+      "rule": "o → â",
+      "note": "Mở âm vị trung → trung thấp"
+    },
+    "băng": {
+      "ancient": "bong",
+      "rule": "o → â",
+      "note": "Mở hóa âm"
+    },
+    "nắng": {
+      "ancient": "nóng",
+      "rule": "o → â",
+      "note": "Mở hóa âm"
+    },
+    "văng": {
+      "ancient": "vong",
+      "rule": "o → â",
+      "note": "Mở hóa âm"
+    },
+    "tắc": {
+      "ancient": "tóc",
+      "rule": "o → â",
+      "note": "Mở hóa âm"
+    },
+    "gắc": {
+      "ancient": "góc",
+      "rule": "o → â",
+      "note": "Mở hóa âm"
+    },
+    "bặc": {
+      "ancient": "bọc",
+      "rule": "o → â",
+      "note": "Mở hóa âm"
+    },
+    "ong": {
+      "ancient": "aong",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "bong": {
+      "ancient": "baong",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "chong": {
+      "ancient": "chaong",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "đong": {
+      "ancient": "đaong",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "song": {
+      "ancient": "saong",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "thong": {
+      "ancient": "thaong",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "vong": {
+      "ancient": "vaong",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "bóc": {
+      "ancient": "báoc",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "chọc": {
+      "ancient": "chạoc",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "đọc": {
+      "ancient": "đạoc",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "lọc": {
+      "ancient": "lạoc",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "mọc": {
+      "ancient": "mạoc",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "nọc": {
+      "ancient": "nạoc",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "thọc": {
+      "ancient": "thạoc",
+      "rule": "ao → o",
+      "note": "Rút gọn nguyên âm đôi"
+    },
+    "bay": {
+      "ancient": "băy",
+      "rule": "ay → ăy (vần ngắn khép)",
+      "note": "chúng băy là kẻ chẳng có tội"
+    },
+    "bấy": {
+      "ancient": "băy",
+      "rule": "ấy → ăy",
+      "note": "thằng Arrio băy đặt"
+    },
+    "bây": {
+      "ancient": "băy",
+      "rule": "ây → ăy",
+      "note": "có băy tám tram"
+    },
+    "dạy / dày": {
+      "ancient": "dầy",
+      "rule": "ay → ây (biểu thị phát âm cổ)",
+      "note": "Đức thầy dầy, người dầy rằng, thiếu kẻ dầy dỗ, chẳng có người nhà dầy"
+    },
+    "cày": {
+      "ancient": "căy",
+      "rule": "ay → ăy",
+      "note": "chẳng được căy cuốc"
+    },
+    "chạy": {
+      "ancient": "chăy",
+      "rule": "ay → ăy",
+      "note": "mùa chăy, giữa ngày ăn chăy, cùng ăn chăy, ngoài mùa chăy, saong đến mùa chăy"
+    },
+    "cháy": {
+      "ancient": "chăy",
+      "rule": "áy → ăy",
+      "note": "đời thương chăy, nhà mình chăy thức ngủ liền là dấu chăy nhà, khi chăy nhà, nắng chăy nhà"
+    },
+    "chậy": {
+      "ancient": "chăy",
+      "rule": "ậy → ăy",
+      "note": "đã chăy sang đấy, đã chăy qua, chăy cả ngày cả đêm, chăy đi bán rao"
+    },
+    "dẫy": {
+      "ancient": "dăy",
+      "rule": "ấy/ẫy → ăy",
+      "note": "đi một dăy thước thợ"
+    },
+    "đầy / đày": {
+      "ancient": "đầy",
+      "rule": "ay/ay → ây/ầy",
+      "note": "đã đầy thằng Bonaparte, bất điệu đi đầy"
+    },
+    "đấy": {
+      "ancient": "đấy",
+      "rule": "không đổi (tiểu từ)",
+      "note": "bán hàng đấy"
+    },
+    "gãy": {
+      "ancient": "gẫy",
+      "rule": "ãy → ẫy",
+      "note": "non chẳng uốn già bẻ gẫy cành"
+    },
+    "hay": {
+      "ancient": "hăy",
+      "rule": "ay → ăy",
+      "note": "đoạn sẽ hăy"
+    },
+    "hãy": {
+      "ancient": "hăy",
+      "rule": "ãy → ăy",
+      "note": "hăy còn, hăy xin"
+    },
+    "lấy": {
+      "ancient": "lăy",
+      "rule": "ấy → ăy",
+      "note": "vào mà lăy cụ, kéo đến lăy cụ, cũng lăy bà mụ chinh, khi đã lăy rồi"
+    },
+    "may": {
+      "ancient": "măy",
+      "rule": "ay → ăy",
+      "note": "mua vải gai măy áo giúp lễ, mẹ tôi măy cho tôi"
+    },
+    "mày": {
+      "ancient": "măy",
+      "rule": "ay → ăy",
+      "note": "thuở xưa măy đã ngác đầu lên"
+    },
+    "này": {
+      "ancient": "năy",
+      "rule": "ay → ăy",
+      "note": "đời năy đã mạt thế, thầy dầy phạt con năy, dòng năy thì giữ blọn, sách năy là sách sổ sang"
+    },
+    "nhảy": {
+      "ancient": "nhăy",
+      "rule": "ảy → ăy",
+      "note": "nhăy vọt lên"
+    },
+    "ngày": {
+      "ancient": "ngăy",
+      "rule": "ay → ăy",
+      "note": "ngăy kiêng, có ngăy lên có ngăy xuống, ngăy gió ngăy chạp ngăy chết, sang ngăy mai, ngăy lễ sinh nhật, giữa ngăy lễ người"
+    },
+    "quay": {
+      "ancient": "quăy",
+      "rule": "ay → ăy",
+      "note": "tầy áo quăy công"
+    },
+    "rảy": {
+      "ancient": "răy",
+      "rule": "ảy → ăy",
+      "note": "răy hăy còn giữ, tựăy cho đến răy, còn giữ đến răy, băy nhiêu ngăy răy, còn giữ đến răy"
+    },
+    "rẫy": {
+      "ancient": "răy",
+      "rule": "ẫy → ăy",
+      "note": "mà răy nước phép"
+    },
+    "tay": {
+      "ancient": "tăy",
+      "rule": "ay → ăy",
+      "note": "một bề bên tăy hữu, cãi tăy đòi vuối ông ấy, nơì tăy cụ Rodrigo, lấy ngón tăy"
+    }
+  }
+}
