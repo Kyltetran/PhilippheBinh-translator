@@ -1,0 +1,317 @@
+[
+  {
+    "id": "sc_001",
+    "ancient": "ê",
+    "modern": "iê",
+    "rule": "Phức hóa nguyên âm đơn ê thành nguyên âm đôi iê",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_002",
+    "ancient": "e",
+    "modern": "iê",
+    "rule": "Phức hóa nguyên âm đơn e thành nguyên âm đôi iê",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_003",
+    "ancient": "uê",
+    "modern": "uyê",
+    "rule": "Phức hóa nguyên âm đôi uê thành uyê",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_004",
+    "ancient": "ue",
+    "modern": "uyê",
+    "rule": "Phức hóa nguyên âm đôi ue thành uyê",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_005",
+    "ancient": "uyê",
+    "modern": "uyê",
+    "rule": "Biến thể iê hóa",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_006",
+    "ancient": "o",
+    "modern": "ươ",
+    "rule": "Phức hóa nguyên âm đơn o thành nguyên âm đôi ươ",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_007",
+    "ancient": "o",
+    "modern": "uô",
+    "rule": "Phức hóa nguyên âm đơn o thành nguyên âm đôi uô",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_008",
+    "ancient": "iê",
+    "modern": "ê",
+    "rule": "Đơn hóa nguyên âm đôi",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_009",
+    "ancient": "iê",
+    "modern": "i",
+    "rule": "Đơn hóa nguyên âm đôi",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_010",
+    "ancient": "uyê",
+    "modern": "uê",
+    "rule": "Đơn hóa nguyên âm đôi",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_011",
+    "ancient": "o",
+    "modern": "u",
+    "rule": "Làm tròn môi nguyên âm",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_012",
+    "ancient": "ô",
+    "modern": "ư",
+    "rule": "Làm tròn môi nguyên âm",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_013",
+    "ancient": "ơ",
+    "modern": "ư",
+    "rule": "Làm tròn môi nguyên âm",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_014",
+    "ancient": "uô",
+    "modern": "ô",
+    "rule": "Đơn hóa nguyên âm đôi",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_015",
+    "ancient": "uô",
+    "modern": "ơ",
+    "rule": "Đơn hóa nguyên âm đôi",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_016",
+    "ancient": "uô",
+    "modern": "o",
+    "rule": "Đơn hóa nguyên âm đôi",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_017",
+    "ancient": "a",
+    "modern": "ă",
+    "rule": "Rút ngắn nguyên âm",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_018",
+    "ancient": "â",
+    "modern": "ă",
+    "rule": "Rút ngắn nguyên âm",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_019",
+    "ancient": "ă",
+    "modern": "ă",
+    "rule": "Ổn định âm",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_020",
+    "ancient": "o",
+    "modern": "ă",
+    "rule": "Mở âm vị hậu → trung thấp",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_021",
+    "ancient": "ao",
+    "modern": "o",
+    "rule": "Rút gọn nguyên âm đôi",
+    "quote": "nan"
+  },
+  {
+    "id": "sc_022",
+    "ancient": "ăy",
+    "modern": "ay",
+    "rule": "Vần ngắn khép",
+    "quote": "chúng băy là kẻ chẳng có tội"
+  },
+  {
+    "id": "sc_023",
+    "ancient": "ăy",
+    "modern": "ấy",
+    "rule": "nan",
+    "quote": "thằng Arrio băy đặt"
+  },
+  {
+    "id": "sc_024",
+    "ancient": "ăy",
+    "modern": "ây",
+    "rule": "Vần ngắn khép",
+    "quote": "có băy tám tram"
+  },
+  {
+    "id": "sc_025",
+    "ancient": "ầy",
+    "modern": "ạy",
+    "rule": "Biểu thị phát âm cổ",
+    "quote": "Đức thầy dầy, người dầy rằng, thiếu kẻ dầy dỗ, chẳng có người nhà dầy"
+  },
+  {
+    "id": "sc_026",
+    "ancient": "ăy",
+    "modern": "ày",
+    "rule": "nan",
+    "quote": "chẳng được căy cuốc"
+  },
+  {
+    "id": "sc_027",
+    "ancient": "ăy",
+    "modern": "ạy",
+    "rule": "nan",
+    "quote": "chăy được, chăy ra đón đàng, chăy vào cửa quan nọ…\\nmùa chăy, giữa ngày ăn chăy, cùng ăn chăy, ngoài mùa chăy, saong đến mùa chăy"
+  },
+  {
+    "id": "sc_028",
+    "ancient": "ăy",
+    "modern": "áy",
+    "rule": "nan",
+    "quote": "đời thương chăy, nhà mình chăy thức ngủ liền là dấu chăy nhà, khi chăy nhà, nắng chăy nhà"
+  },
+  {
+    "id": "sc_029",
+    "ancient": "ăy",
+    "modern": "ậy",
+    "rule": "nan",
+    "quote": "đã chăy sang đấy, đã chăy qua, chăy cả ngày cả đêm, chăy đi bán rao"
+  },
+  {
+    "id": "sc_030",
+    "ancient": "ăy",
+    "modern": "ẫy",
+    "rule": "nan",
+    "quote": "đi một dăy thước thợ"
+  },
+  {
+    "id": "sc_031",
+    "ancient": "ây",
+    "modern": "ay",
+    "rule": "nan",
+    "quote": "đã đầy thằng Bonaparte, bất điệu đi đầy"
+  },
+  {
+    "id": "sc_032",
+    "ancient": "đấy",
+    "modern": "đấy",
+    "rule": "Không đổi (tiểu từ)",
+    "quote": "bán hàng đấy"
+  },
+  {
+    "id": "sc_033",
+    "ancient": "ẫy",
+    "modern": "ãy",
+    "rule": "nan",
+    "quote": "non chẳng uốn già bẻ gẫy cành"
+  },
+  {
+    "id": "sc_034",
+    "ancient": "ăy",
+    "modern": "ay",
+    "rule": "nan",
+    "quote": "đoạn sẽ hăy"
+  },
+  {
+    "id": "sc_035",
+    "ancient": "ăy",
+    "modern": "ãy",
+    "rule": "nan",
+    "quote": "hăy còn, hăy xin"
+  },
+  {
+    "id": "sc_036",
+    "ancient": "ăy",
+    "modern": "ấy",
+    "rule": "nan",
+    "quote": "vào mà lăy cụ, kéo đến lăy cụ, cũng lăy bà mụ chinh, khi đã lăy rồi"
+  },
+  {
+    "id": "sc_037",
+    "ancient": "ăy",
+    "modern": "ay",
+    "rule": "nan",
+    "quote": "mua vải gai măy áo giúp lễ, mẹ tôi măy cho tôi"
+  },
+  {
+    "id": "sc_038",
+    "ancient": "ăy",
+    "modern": "ày",
+    "rule": "nan",
+    "quote": "thuở xưa măy đã ngác đầu lên"
+  },
+  {
+    "id": "sc_039",
+    "ancient": "ăy",
+    "modern": "ày",
+    "rule": "nan",
+    "quote": "đời năy đã mạt thế, thầy dầy phạt con năy, dòng năy thì giữ blọn, sách năy là sách sổ sang"
+  },
+  {
+    "id": "sc_040",
+    "ancient": "ăy",
+    "modern": "ảy",
+    "rule": "nan",
+    "quote": "nhăy vọt lên"
+  },
+  {
+    "id": "sc_041",
+    "ancient": "ăy",
+    "modern": "ày",
+    "rule": "nan",
+    "quote": "ngăy kiêng, có ngăy lên có ngăy xuống, ngăy gió ngăy chạp ngăy chết, sang ngăy mai, ngăy lễ sinh nhật, giữa ngăy lễ người"
+  },
+  {
+    "id": "sc_042",
+    "ancient": "ăy",
+    "modern": "ay",
+    "rule": "nan",
+    "quote": "tầy áo quăy công"
+  },
+  {
+    "id": "sc_043",
+    "ancient": "ăy",
+    "modern": "ảy",
+    "rule": "nan",
+    "quote": "răy hăy còn giữ, tựăy cho đến răy, còn giữ đến răy, băy nhiêu ngăy răy, còn giữ đến răy"
+  },
+  {
+    "id": "sc_044",
+    "ancient": "ăy",
+    "modern": "ẫy",
+    "rule": "nan",
+    "quote": "mà răy nước phép"
+  },
+  {
+    "id": "sc_045",
+    "ancient": "ăy",
+    "modern": "ay",
+    "rule": "nan",
+    "quote": "một bề bên tăy hữu, cãi tăy đòi vuối ông ấy, nơì tăy cụ Rodrigo, lấy ngón tăy"
+  }
+]

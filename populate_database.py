@@ -1,14 +1,15 @@
+"""
+Populate ChromaDB with linguistic data
+Run this after convert_csv_to_json.py
+"""
 import json
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 from get_embedding_function import get_embedding_function
-import pandas as pd
 from tqdm import tqdm
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
-from langchain_community.vectorstores import Chroma
-
+from langchain_chroma import Chroma
 
 load_dotenv()
 
@@ -25,7 +26,7 @@ def load_chunks(path):
             obj = json.loads(line)
             t = obj.get("type", "misc")
 
-            # Build page content
+            # Build page content for embeddings
             if t == "sound_change":
                 content = f"sound_change | ancient:{obj.get('ancient')} | modern:{obj.get('modern')} | rule:{obj.get('rule')} | note:{obj.get('note')}"
             elif t == "grammar_pattern":
@@ -47,29 +48,58 @@ def load_chunks(path):
 
 
 def main():
-    print("📥 Loading data from:", PROCESSED)
+    print("=" * 60)
+    print("Populating ChromaDB with linguistic data...")
+    print("=" * 60)
+
+    print(f"\n📥 Loading data from: {PROCESSED}")
     grouped = load_chunks(PROCESSED)
 
     embedding = get_embedding_function()
 
-    # Create separate vectorstores
+    # Create separate vectorstores for each type
     for t, docs in grouped.items():
         save_dir = CHROMA_DIR / t
         save_dir.mkdir(parents=True, exist_ok=True)
 
         print(
-            f"🚀 Building Chroma collection for '{t}' with {len(docs)} docs...")
+            f"\n🚀 Building Chroma collection for '{t}' with {len(docs)} docs...")
 
-        Chroma.from_texts(
-            texts=[d["content"] for d in docs],
-            embedding=embedding,
-            metadatas=[d["metadata"] for d in docs],
-            persist_directory=str(save_dir)
-        )
+        # Use batch processing for efficiency
+        batch_size = 100
+        for i in tqdm(range(0, len(docs), batch_size), desc=f"Processing {t}"):
+            batch = docs[i:i+batch_size]
 
-        print(f"✅ Saved collection '{t}' into:", save_dir)
+            if i == 0:
+                # Create new collection
+                db = Chroma.from_texts(
+                    texts=[d["content"] for d in batch],
+                    embedding=embedding,
+                    metadatas=[d["metadata"] for d in batch],
+                    persist_directory=str(save_dir)
+                )
+            else:
+                # Add to existing collection
+                db = Chroma(
+                    persist_directory=str(save_dir),
+                    embedding_function=embedding
+                )
+                db.add_texts(
+                    texts=[d["content"] for d in batch],
+                    metadatas=[d["metadata"] for d in batch]
+                )
 
-    print("\n✅ ALL DONE: Vector DB created!")
+        print(f"✅ Saved collection '{t}' into: {save_dir}")
+        print(f"   Total documents: {len(docs)}")
+
+    print("\n" + "=" * 60)
+    print("✅ ALL DONE: Vector DB created successfully!")
+    print("=" * 60)
+
+    # Print summary
+    print("\n📊 Collection Summary:")
+    for t, docs in grouped.items():
+        print(f"  • {t}: {len(docs)} documents")
 
 
 if __name__ == "__main__":

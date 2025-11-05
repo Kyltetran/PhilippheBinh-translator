@@ -1,0 +1,342 @@
+[
+  {
+    "id": "phrase_001",
+    "ancient": "Ai mạnh nấy được",
+    "modern": "Mạnh ai nấy thắng, ai có quyền lực thì chiếm được lợi thế.",
+    "quote": [
+      {
+        "context": "...saong chẳng có ph giết, mà khi đã ra khỏi địa phận mình, thì ai mạnh nấy đắc...(tr.41)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_002",
+    "ancient": "Bất tri kỷ tâm",
+    "modern": "Không biết lòng mình, chỉ lo việc ngoài, thiếu tự tỉnh.",
+    "quote": [
+      {
+        "context": "Đã hay bất tri kỷ tâm, saong le quan kỳ địch tác, mà sự yếu ấy thì các thầy Daòng thánh cũng lấy làm lạ...(tr.81)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_003",
+    "ancient": "Cha làm quan nào thì con lại làm quan nấy",
+    "modern": "Cha làm nghề gì, con nối nghiệp đó; ám chỉ hệ thống cha truyền con nối.",
+    "quote": [
+      {
+        "context": "Của cải thì dư dật, mà cha làm quan nào thì con lại làm quan nấy...(tr.25)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_004",
+    "ancient": "Chạy ngang chạy dọc",
+    "modern": "Chỉ sự bận rộn, hoạt động khắp nơi.",
+    "quote": [
+      {
+        "context": "Mà traong nền nhà thì cũng phải đào nhiều nơi... đã chạy ngang chạy dọc khắp mọi xó...(tr.590)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_005",
+    "ancient": "Chiềng kêu",
+    "modern": "Tiếng trống vang, báo hiệu lễ hội hoặc sự kiện lớn.",
+    "quote": [
+      {
+        "context": "Ngày lễ trọng thì... mà chiềng kêu trống giãong...(tr.18)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_006",
+    "ancient": "Cơm nặng áo dầy",
+    "modern": "Chỉ người có phúc, sống sung túc, đủ đầy.",
+    "quote": [
+      {
+        "context": "...chẳng những là cha linh hồn, mà lại phần xác vì đã cơm nặng áo dầy...(tr.31)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_007",
+    "ancient": "Công thần phiệt duyệt",
+    "modern": "Quan lớn, người có công lao hiển hách, quyền uy trong triều.",
+    "quote": [
+      {
+        "context": "...vì quan nước người là công thần phiệt duyệt...(tr.100)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_008",
+    "ancient": "Đi chu tâm chu, đi mã tâm mã",
+    "modern": "Chỉ người không nhất quán, thay đổi lòng dạ, gió chiều nào che chiều ấy.",
+    "quote": [
+      {
+        "context": "Lại có kẻ bảo tôi rằng Cụ phải giữ mình, kẻo đi chu tâm chu, đi mã tâm mã...(tr.41)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_009",
+    "ancient": "Độc dược khổ khẩu",
+    "modern": "Thuốc đắng dã tật, lời thật mất lòng; cái tốt thường khó chịu nhưng có lợi.",
+    "quote": [
+      {
+        "context": "...cùng như độc dược khổ khẩu... như thuốc ngọt thì chẳng chữa được bệnh vậy...(tr.71)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_010",
+    "ancient": "Được cá bỏ nơm",
+    "modern": "Đạt được điều mình muốn rồi thì bỏ phương tiện, không còn cần đến nữa.",
+    "quote": [
+      {
+        "context": "...vì được cá bỏ nơm, thì ai chẳng cười...(tr.31)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_011",
+    "ancient": "Huệ̂t cư dạ xứ",
+    "modern": "Phong tục man rợ: con giết cha mẹ già; ẩn dụ chỉ đạo đức suy đồi.",
+    "quote": [
+      {
+        "context": "...là huệt cư dạ xứ... liền giết đi mà làm tiệc...(tr.241)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_012",
+    "ancient": "Khi thịnh khi suy",
+    "modern": "Cuộc đời có lúc hưng thịnh, lúc suy tàn.",
+    "quote": [
+      {
+        "context": "Lại phải biết khi ta còn ở thế gian này, thì có khi thịnh khi suy...(tr.80)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_013",
+    "ancient": "Mắt mờ cửa nhà",
+    "modern": "Chỉ người bận rộn, lo toan nhiều việc trong nhà.",
+    "quote": [
+      {
+        "context": "...cho nên mắt mờ cửa nhà...(tr.131)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_014",
+    "ancient": "Miệng đắng lưỡi rắn",
+    "modern": "Chỉ người độc miệng, thâm độc, nói lời cay nghiệt.",
+    "quote": [
+      {
+        "context": "...mà miệng đắng lưỡi rắn, cũng giang lưỡi từ bẻ...(tr.33)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_015",
+    "ancient": "Nhẵn như gương",
+    "modern": "Trơn tru, bóng bẩy, sạch sẽ; cũng có thể ẩn dụ người khéo léo, trơn tru.",
+    "quote": [
+      {
+        "context": "...mà lâu lia nhẵn như gương...(tr.89)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_016",
+    "ancient": "Nhất phu nhất phụ",
+    "modern": "Một vợ một chồng, trung thủy, đạo đức.",
+    "quote": [
+      {
+        "context": "...giữ sự nhất phu nhất phụ... làm gương sáng dậy dỗ con cái...(tr.227)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_017",
+    "ancient": "Non chẳng uốn, già bẻ gãy ngành",
+    "modern": "Trẻ không dạy dỗ sớm thì lớn khó sửa nết.",
+    "quote": [
+      {
+        "context": "...vì rằng non chẳng uốn, già bẻ gãy ngành...(tr.220)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_018",
+    "ancient": "Nuôi ong tay áo",
+    "modern": "Nuôi kẻ phản bội, giúp người rồi bị hại lại.",
+    "quote": [
+      {
+        "context": "Ấy là sự nuôi aong tay áo... mà nó lại làm khốn cho người...(tr.40)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_019",
+    "ancient": "Phaong ba bão táp",
+    "modern": "Chỉ sóng gió, biến động lớn, khó khăn trùng trùng.",
+    "quote": [
+      {
+        "context": "Đến ngày 12 tháng 3 liền phải phaong ba bão táp...(tr.60)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_020",
+    "ancient": "Phu sướng phụ tùy",
+    "modern": "Đạo vợ chồng xưa: vợ theo chồng, phụ thuộc chồng.",
+    "quote": [
+      {
+        "context": "...phu sướng phụ tùy... làm gương sáng dậy dỗ con cái...(tr.227)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_021",
+    "ancient": "Quan hình sát sắc",
+    "modern": "Quan nghiêm khắc, xử lý công minh, cứng rắn.",
+    "quote": [
+      {
+        "context": "...thì cứ quan hình sát sắc...(tr.159)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_022",
+    "ancient": "Quan kỳ địch tác",
+    "modern": "Kẻ địch bên cạnh, người đối lập hoặc cạnh tranh trực tiếp.",
+    "quote": [
+      {
+        "context": "Đã hay bất tri kỷ tâm, saong le quan kỳ địch tác...(tr.81)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_023",
+    "ancient": "Quen thì dài dạ, lạ thì dài áo",
+    "modern": "Thân quen thì dễ nói chuyện, xa lạ thì giữ kẽ.",
+    "quote": [
+      {
+        "context": "...quen thì dài dạ, lạ thì dài áo...(tr.159)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_024",
+    "ancient": "Rễ bằng rễ bám",
+    "modern": "Chỉ sự ràng buộc chặt chẽ, khó gỡ bỏ.",
+    "quote": [
+      {
+        "context": "...phải nhớ cho sớm kẻo để lâu có rễ bằng rễ bám mà khó nhổ...(tr.95)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_025",
+    "ancient": "Sở tổn công lệnh",
+    "modern": "Tổn hao công sức, vất vả vì công vụ.",
+    "quote": [
+      {
+        "context": "...vì phải sở tổn công lệnh mà đem hạt Cacao về Anam...(tr.587)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_026",
+    "ancient": "Sói dữ ra lành",
+    "modern": "Người xấu được cảm hóa trở nên hiền lành.",
+    "quote": [
+      {
+        "context": "...thì sói dữ ra lành...(tr.53-54)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_027",
+    "ancient": "Tài yếu sức mọn",
+    "modern": "Tự hạ mình, khiêm tốn, nói bản thân kém cỏi.",
+    "quote": [
+      {
+        "context": "...tôi là kẻ tài yếu sức mọn...(tr.105)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_028",
+    "ancient": "Tận lang vô kế",
+    "modern": "Hết đường xoay xở, bế tắc, không còn kế nào khác.",
+    "quote": [
+      {
+        "context": "...thì tận lang vô kế...(tr.315)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_029",
+    "ancient": "Thập bát cuốc chư hầu",
+    "modern": "Mười tám nước chư hầu cùng theo đạo; chỉ sự đồng lòng, quy thuận.",
+    "quote": [
+      {
+        "context": "...thì thập bát cuốc chư hầu cũng theo Đạo Thích ca...(tr.76)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_030",
+    "ancient": "Thiên sơn vạn thủy",
+    "modern": "Núi ngàn sông vạn, chỉ sự xa xôi, cách trở.",
+    "quote": [
+      {
+        "context": "...kẻ là thiên sơn vạn thủy...(tr.160)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_031",
+    "ancient": "Trâu bò húc nhau thì ruồi muỗi phải khốn",
+    "modern": "Kẻ yếu bị vạ lây khi người mạnh tranh chấp.",
+    "quote": [
+      {
+        "context": "...vì trâu bò húc nhau thì ruồi muỗi phải khốn...(tr.71)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_032",
+    "ancient": "Trung ngôn nghịch nhĩ",
+    "modern": "Lời ngay thẳng thường khó nghe, nhưng có lợi.",
+    "quote": [
+      {
+        "context": "...trung ngôn nghịch nhĩ... saong được ích cho kẻ có lòng sửa mình...(tr.71)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_033",
+    "ancient": "Vay công mượn nợ",
+    "modern": "Chỉ nợ nần chồng chất, mắc ơn nghĩa khắp nơi.",
+    "quote": [
+      {
+        "context": "...vay công mượn nợ người ta bao nhiêu...(tr.315)"
+      }
+    ]
+  },
+  {
+    "id": "phrase_034",
+    "ancient": "Vạn vật chân nguyên",
+    "modern": "Vạn vật có bản thể thật, chỉ chân lý vũ trụ, nguyên lý tối sơ.",
+    "quote": [
+      {
+        "context": "...Vạn vật chân nguyên...(tr.481)"
+      }
+    ]
+  }
+]

@@ -1,0 +1,628 @@
+[
+  {
+    "id": "vocab_001",
+    "ancient": "Bằng",
+    "modern": [
+      "Còn như",
+      "còn"
+    ],
+    "quote": [
+      {
+        "context": "Bằng sự tôi ra khỏi nhà Bùi chu mà vắng mặt Vít vợ, thì cũng được gọi là trốn...(tr.95)\\nBằng lượm lúa… (tr.557)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_002",
+    "ancient": "Bỏ vạ",
+    "modern": [
+      "Gây vạ",
+      "để vạ cho"
+    ],
+    "quote": [
+      {
+        "context": "...bốn đạo Daòng thánh được dịp ấy, thì làm chước đối bả Vít vợ, cùng bỏ vạ cho Lễ Ngõn, … (tr.38)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_003",
+    "ancient": "Bổn cuốc",
+    "modern": [
+      "Bản quốc",
+      "nước mình"
+    ],
+    "quote": [
+      {
+        "context": "Khi Vít vợ Khâm cáo bổn cuốc đưa xác Vít vợ Bể có nhà tang thì gọi cụ Luis đến xem… (tr.10)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_004",
+    "ancient": "Cả và",
+    "modern": [
+      "Cả",
+      "tất cả"
+    ],
+    "quote": [
+      {
+        "context": "Cùng lễ phục sinh mà kiệu ảnh, thì các họ cả và xứ điệu đến kiệu ảnh… (tr.20)\\nKhắp cả và cánh đồng… (tr.23)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_005",
+    "ancient": "Cáo",
+    "modern": [
+      "Báo",
+      "nói với"
+    ],
+    "quote": [
+      {
+        "context": "... đến khi kẻ cướp được thì đốt Tàu cùng giết hết cuấn khách, còn sống sót một đứa thì nó bắt đến mà chẳng đến thì nó cáo quan rằng:… (tr.16)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_006",
+    "ancient": "Cậy",
+    "modern": [
+      "Nhờ",
+      "nhờ cậy"
+    ],
+    "quote": [
+      {
+        "context": "Cậy thầy một việc rất traọng… (tr.250)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_007",
+    "ancient": "Chiên",
+    "modern": [
+      "Cừu"
+    ],
+    "quote": [
+      {
+        "context": "Liền lên rừng mà chăn chiên cho cha vợ 40 năm, đoạn mới đưa dân mình về đất Tổ Tông… (tr.28)\\nBắt lấy một con chiên lạc… (tr.258)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_008",
+    "ancient": "Chiềng",
+    "modern": [
+      "Trình",
+      "thưa",
+      "bẩm"
+    ],
+    "quote": [
+      {
+        "context": "Con ấy thưa rằng, chiềng thầy chẳng có ai… (tr.114)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_009",
+    "ancient": "Cho liền",
+    "modern": [
+      "Liên tục",
+      "thường xuyên"
+    ],
+    "quote": [
+      {
+        "context": "Gưởi thư từ cho liền… (tr.162)\\nSaóng gió hàng vật vả tứ bể cho liền… (tr.196)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_010",
+    "ancient": "Chước",
+    "modern": [
+      "Mưu",
+      "kế"
+    ],
+    "quote": [
+      {
+        "context": "Vì Đ.thầy thành Goa chẳng biết chước kẻ gian, liền tin thật mời ấy… (tr.57)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_011",
+    "ancient": "Con",
+    "modern": [
+      "Cuốn",
+      "quyển"
+    ],
+    "quote": [
+      {
+        "context": "Cầm một đứa một con sách … (tr.459)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_012",
+    "ancient": "Đức lác",
+    "modern": [
+      "Mắng mỏ",
+      "nhiếc móc"
+    ],
+    "quote": [
+      {
+        "context": "Saong khi nó đến thuyền mà đức lác với người nhà thì người nghe tiếng, … (tr.23)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_013",
+    "ancient": "Đàng sá",
+    "modern": [
+      "Đường sá"
+    ],
+    "quote": [
+      {
+        "context": "Saong người dậy lên xứ Bắc vuói cụ Cần cho được ra Vạn ninh, cho được biết đàng sá (tr.2)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_014",
+    "ancient": "Đe loi",
+    "modern": [
+      "Dọa nạt"
+    ],
+    "quote": [
+      {
+        "context": "Cùng đức lác mắng mỏ, và đe loi sẽ xuống khám xét,… (tr.83)\\nCó một cậy thần cậy thế cũng múa mép mà nạt bốn đạo Anam, vì đe loi những vạ nợ vạ kia… (tr.117)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_015",
+    "ancient": "Đỉ gì",
+    "modern": [
+      "cái gì / chút gì"
+    ],
+    "quote": [
+      {
+        "context": "Bởi đấy thì làm cho Daòng thánh sang chịu chức Vít vợ Ma cao traong một trật 10 người làm thầy cả chưa biết đỉ gì… (tr.97)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_016",
+    "ancient": "Đoạn (mới)",
+    "modern": [
+      "Xong (rồi mới)",
+      "sau đó (mới)"
+    ],
+    "quote": [
+      {
+        "context": "Liền lên rừng mà chăn chiên cho cha vợ 40 năm, đoạn mới đưa dân mình về đất Tổ Tông… (tr.28)\\nHọc đoạn thời thôi… (tr.396)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_017",
+    "ancient": "Giả",
+    "modern": [
+      "Giã biệt",
+      "tạm biệt",
+      "từ biệt"
+    ],
+    "quote": [
+      {
+        "context": "Đến khi đã trẩy sang Anam thì mới làm thư ở dạoc đàng mà gưởi về giả cha … (tr.25)\\nÔng Hoàng Bảo lộc giả Đức thánh… (tr.174)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_018",
+    "ancient": "Gưởi",
+    "modern": [
+      "Gửi"
+    ],
+    "quote": [
+      {
+        "context": "Có gưởi tiền bạc đến tây… (tr.221)\\nỞ bên Phương đông gưởi về… (tr.225)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_019",
+    "ancient": "Hầu",
+    "modern": [
+      "Gần",
+      "gần như"
+    ],
+    "quote": [
+      {
+        "context": "... vì khi ấy chẳng có gió, thì mới theo được mà hơi, khi lên tàu thì đã hầu nửa ngày… (tr.59)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_020",
+    "ancient": "Kẻ chợ",
+    "modern": [
+      "Kinh thành",
+      "thủ đô"
+    ],
+    "quote": [
+      {
+        "context": "Tôi là Thầy cả Bình làm ở Kẻ chợ nước Portugal năm 1822 mà chép nhiều sự cho nên gọi là Sách sổ sang (tr.1)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_021",
+    "ancient": "Kẻ liệt",
+    "modern": [
+      "Người bệnh"
+    ],
+    "quote": [
+      {
+        "context": "Thầy cả giữ việc kẻ liệt thưa rằng: Tiền phó ông là tiền Nhà Vua… (tr.154)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_022",
+    "ancient": "Kín nhiệm",
+    "modern": [
+      "Bí mật",
+      "kín đáo"
+    ],
+    "quote": [
+      {
+        "context": "Saong khi các thầy lên đến xá Lác môn thì phải trẩy kín nhiệm,… (tr.2)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_023",
+    "ancient": "Làm chước",
+    "modern": [
+      "Tìm cách",
+      "bày trò"
+    ],
+    "quote": [
+      {
+        "context": "Bốn đạo Daòng thánh được dịp ấy, thì làm chước đối bả Vít vợ … (tr.38)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_024",
+    "ancient": "Làm khốn",
+    "modern": [
+      "Gây khó khăn",
+      "trở ngại",
+      "làm cho khốn đốn"
+    ],
+    "quote": [
+      {
+        "context": "... vì thấy Vua ấy làm khốn cho dân Judeo, thì chẳng muốn vui một mình, mà dẫn mình khoác loác… (tr.28)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_025",
+    "ancient": "Lang",
+    "modern": [
+      "Lương"
+    ],
+    "quote": [
+      {
+        "context": "Nó phát lang cho Vua… (tr.239)\\nCó địa phận thì nhiều lang … (tr.408)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_026",
+    "ancient": "Mặc làoòng",
+    "modern": [
+      "Mặc lòng",
+      "tùy ý",
+      "mặc kệ"
+    ],
+    "quote": [
+      {
+        "context": "...dù là phải liều mình mặc làoòng (tr.261)\\nBệnh nạn nào mặc làoòng… (tr.445)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_027",
+    "ancient": "Mắt, mắt mờ",
+    "modern": [
+      "Đất",
+      "đất đỏ"
+    ],
+    "quote": [
+      {
+        "context": "Sấp thì mắt mờ … (tr.445)\\nMắt hơn thuốc bắc… (tr.555)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_028",
+    "ancient": "Một",
+    "modern": [
+      "Chỉ",
+      "duy chỉ"
+    ],
+    "quote": [
+      {
+        "context": "Một đến giả ơn mà thôi… (tr.162)\\nMột nỗi u ả… (tr.478)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_029",
+    "ancient": "Một trật",
+    "modern": [
+      "Một lần"
+    ],
+    "quote": [
+      {
+        "context": "...vì nhiều người nó chẳng bả, mà khi có bả thì bả một phần, còn chúng tôi thì nó bả traong một trật, thì nhiều tiền bạc,… (tr.157)\\n…dù 5,3 thầy cả đến, thì cũng làm lễ một trật vuói nhau,… (tr.375)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_030",
+    "ancient": "Người",
+    "modern": [
+      "Ngửi"
+    ],
+    "quote": [
+      {
+        "context": "Người mùi thơm, người mùi khét… (tr.220)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_031",
+    "ancient": "Phải",
+    "modern": [
+      "Gặp",
+      "mắc phải",
+      "bị"
+    ],
+    "quote": [
+      {
+        "context": "Phải chước đối bả… (tr.309)\\nĐức thánh Phapha phải bắt… (tr.380)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_032",
+    "ancient": "Phô",
+    "modern": [
+      "Các",
+      "lũ",
+      "chúng"
+    ],
+    "quote": [
+      {
+        "context": "Xin người đừng nói truyện ấy nữa, kẻo phô bà ấy khoác loác… (tr.24)\\nPhô con ở thế gian này (tr.261)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_033",
+    "ancient": "Phú",
+    "modern": [
+      "Ban",
+      "cho"
+    ],
+    "quote": [
+      {
+        "context": "Cùng phú hết tiền bạc cho hai thầy ấy đem đi … (tr.32)\\nĐã phú cả và… (tr.189)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_034",
+    "ancient": "Phương chi",
+    "modern": [
+      "Huống hồ"
+    ],
+    "quote": [
+      {
+        "context": "Mà sự yếu ấy thì các thầy Daòng thánh cũng lấy làm lạ, phương chi là các thầy Daòng ta… (tr.81)\\nPhương chi là có Daòng sang Phương đông… (tr.503)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_035",
+    "ancient": "Ra",
+    "modern": [
+      "Trở nên",
+      "thành ra"
+    ],
+    "quote": [
+      {
+        "context": "Mà có kẻ cũng làm ghếy bằng sợi mây, cho ra lễ phép cùng thôi cách traong kẻ chọ,… (tr.170)\\nCác nước Phương Tây điều ra tan tác… (tr.267)\\nThì ra tối tăm… (tr.276)\\nĐức Phapha ra mạnh bạo (tr.310)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_036",
+    "ancient": "Rầy",
+    "modern": [
+      "Nay"
+    ],
+    "quote": [
+      {
+        "context": "Thầy cả Cuyền rầy thế nào… (tr.165)\\nSaong rầy bà ấy đã ngoài 40 (tr.217)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_037",
+    "ancient": "Ru",
+    "modern": [
+      "Sao",
+      "hay sao"
+    ],
+    "quote": [
+      {
+        "context": "Phô ông lại chẳng có bức sớt ru… (tr.165)\\nMà người chẳng thương ru… (tr.277)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_038",
+    "ancient": "Saong le",
+    "modern": [
+      "Tuy nhiên"
+    ],
+    "quote": [
+      {
+        "context": "Saong le trước khi phá Daòng mở đầu năm ấy, thì 8 thầy Daòng trẩy sang Anam (tr.1)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_039",
+    "ancient": "Sốt mến",
+    "modern": [
+      "Quý mến"
+    ],
+    "quote": [
+      {
+        "context": "Càng ra sốt mến… (tr.253)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_040",
+    "ancient": "Sở tổn",
+    "modern": [
+      "Tốn kém"
+    ],
+    "quote": [
+      {
+        "context": "Vì Daòng D.C.J. đã chịu sở tổn mà nuôi người… (tr.64)\\nChịu sở tổn đến dẩu… (tr.274)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_041",
+    "ancient": "Thầy thầy",
+    "modern": [
+      "Tất cả"
+    ],
+    "quote": [
+      {
+        "context": "Thì thầy thầy điều cho phép bốn đạo Đại minh ăn thịt (tr.49)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_042",
+    "ancient": "Thầy cả",
+    "modern": [
+      "Linh mục"
+    ],
+    "quote": [
+      {
+        "context": "Tôi là Thầy cả Philiphê Bình, quê ở Hải dương xứ … (tr.1)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_043",
+    "ancient": "Thượng vị",
+    "modern": [
+      "Hoàng đế"
+    ],
+    "quote": [
+      {
+        "context": "... vì Thượng vị Khang hi ban 4 chữ vàng treo trước nhà thờ Bắc kim rằng: Vạn vật chăn nguyên,… (tr.481)\\nLần sau hết thì Thượng vị Khang hi sai thầy Daòng D.C.J. sang Sứ nước Anam,… (tr.500)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_044",
+    "ancient": "Tràng",
+    "modern": [
+      "Trường"
+    ],
+    "quote": [
+      {
+        "context": "Nhiều tràng dậy hoạch… (tr.225)\\nTràng hoạch thông thái … (tr.294)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_045",
+    "ancient": "Traọng",
+    "modern": [
+      "Quan trọng",
+      "lớn"
+    ],
+    "quote": [
+      {
+        "context": "Ngày lễ traọng, thì phang 6,7 gian màn, cùng 3,4 kiệu,… (tr.18)\\nTôi cậy Thầy một việc rất traọng cùng rất xa xôi,… (tr.250)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_046",
+    "ancient": "Tuan trẩy",
+    "modern": [
+      "Định đi",
+      "định lên đường"
+    ],
+    "quote": [
+      {
+        "context": "Saong cũng ngăn trở như trước người ở ngoài La phú mà tuan trẩy vậy (tr.9)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_047",
+    "ancient": "Tuền",
+    "modern": [
+      "Tuyền",
+      "toàn là"
+    ],
+    "quote": [
+      {
+        "context": "Một gian nhà tuền đã… (tr.414)\\nTuền những da bảo máoọng ra như tờ giấy… (tr.419)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_048",
+    "ancient": "Tuệt",
+    "modern": [
+      "Diệt",
+      "chấm dứt",
+      "hết"
+    ],
+    "quote": [
+      {
+        "context": "Cho nên mình chẳng tuệt được nó… (tr.243)\\nPhá cho tuệt dân (tr.595)"
+      }
+    ]
+  },
+  {
+    "id": "vocab_049",
+    "ancient": "Vaóc",
+    "modern": [
+      "Hàng dệt bằng to",
+      "có hoa văn"
+    ],
+    "quote": [
+      {
+        "context": "Mà rằng mời chở vaóc về hôm nọ, bán cho người ta cũng tiền…"
+      }
+    ]
+  }
+]

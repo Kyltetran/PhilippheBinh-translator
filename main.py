@@ -7,28 +7,28 @@ from langchain_chroma import Chroma
 from langchain_openai import ChatOpenAI
 from get_embedding_function import get_embedding_function
 
-# Load environment variables
 from dotenv import load_dotenv
 load_dotenv()
 
+# ------------------------------------------------------------------------------
+# App Configuration
+# ------------------------------------------------------------------------------
 app = Flask(__name__)
-app.secret_key = "123456"
+app.secret_key = "123456"  # change for production
 
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "data" / "processed"
 CHROMA_PATH = os.getenv("CHROMA_PERSIST_DIR", "chroma_db")
 
-# -------------------------------
-# Load exact dictionaries
-# -------------------------------
-
+# ------------------------------------------------------------------------------
+# Load Exact Dictionaries
+# ------------------------------------------------------------------------------
 with open(DATA_DIR / "exact_dicts.json", "r", encoding="utf8") as f:
     EXACT = json.load(f)
 
-# -------------------------------
-# Load vector stores (1 per type)
-# -------------------------------
-
+# ------------------------------------------------------------------------------
+# Load Chroma Collections
+# ------------------------------------------------------------------------------
 embedding = get_embedding_function()
 
 VECTORS = {
@@ -41,80 +41,111 @@ VECTORS = {
 
 print("✅ Loaded Chroma collections:", list(VECTORS.keys()))
 
-# -------------------------------
+# ------------------------------------------------------------------------------
 # Translator Prompt
-# -------------------------------
-
+# ------------------------------------------------------------------------------
 PROMPT_TEMPLATE = """
-Bạn là chuyên gia ngôn ngữ học lịch sử, chuyên dịch tiếng Việt hiện đại sang **cổ ngữ Philíphe Bỉnh thế kỷ XVII**.
+Bạn là chuyên gia ngôn ngữ học lịch sử, tái dựng tiếng Việt thế kỷ XVII theo văn phong Philiphê Bỉnh.
 
-Dữ liệu ngôn ngữ và quy tắc đi kèm dưới đây là CỐ ĐỊNH, TUYỆT ĐỐI ĐÚNG:
-
-----------------------
-EVIDENCE:
+========================================
+EVIDENCE (quy tắc, từ vựng, cụm cố định, ngữ âm):
 {evidence}
-----------------------
+========================================
 
-YÊU CẦU DỊCH:
-Câu gốc (hiện đại):
+Câu cần dịch:
 "{input_text}"
 
-HƯỚNG DẪN BẮT BUỘC:
-1. Nếu tồn tại **cụm cổ cố định** → dùng ngay.
-2. Nếu từ hiện đại có trong bảng biến âm → chuyển sang dạng cổ tương ứng.
-3. Nếu từ không có trong bảng → tham khảo quy tắc ngữ âm & văn cảnh trong evidence.
-4. Tôn trọng văn phong và chính tả Philíphe Bỉnh.
-5. KHÔNG được bịa từ mới.
-6. Giữ ý nghĩa gốc, chỉ chuyển hình thức ngôn ngữ.
+========================================
+QUY TẮC DỊCH – THỨ TỰ BẮT BUỘC
+========================================
 
-Hãy xuất ra JSON:
-{{
-  "translation": "...",
-  "explanation": "..."
-}}
+1. **Biến âm / ngữ âm**
+   - Nếu từ hiện đại có dạng cổ tương ứng → dùng.
+   - KHÔNG được thay đổi nghĩa.
+
+2. **Từ vựng cổ / đồng nghĩa cùng trường nghĩa**
+   - Nếu có từ cổ mang nghĩa TRÙNG KHỚP → dùng.
+   - Nếu chỉ có đồng nghĩa hiện đại → dùng đồng nghĩa rồi áp dụng biến âm.
+
+3. **Cú pháp cổ**
+   - Áp dụng NẾU phù hợp & KHÔNG làm đổi nghĩa.
+
+4. **Cụm cổ cố định**
+   ✅ Chỉ dùng nếu cụm hiện đại TRÙNG KHỚP 100% với mục “modern” trong dữ liệu.  
+   ❌ Không được dùng cụm cổ dài là mô tả hoặc câu giải nghĩa.  
+   ❌ Không được dùng cụm cổ thuộc TRƯỜNG NGHĨA KHÁC.
+
+========================================
+QUY TẮC QUAN TRỌNG
+========================================
+
+❗Nếu KHÔNG tìm thấy bất kỳ dạng cổ phù hợp (âm, từ, ngữ pháp, đồng nghĩa):
+→ **GIỮ NGUYÊN từ hiện đại**.  
+→ Không được thay bằng cụm cổ khác nghĩa.  
+→ Không được “chuyển phong cách” hoặc tự sáng tác câu cổ.
+
+Ví dụ:
+- “tôi thật xinh đẹp” → nếu không có từ cổ cho “xinh đẹp”, giữ nguyên “xinh đẹp”.
+
+========================================
+ĐẦU RA (KHÔNG dùng code block)
+========================================
+
+Dịch cổ ngữ: <kết quả dịch – giữ nguyên các từ không có dạng cổ>
+Giải thích: <tóm tắt quy tắc đã áp dụng, và ghi rõ từ nào được giữ nguyên vì không có dạng cổ phù hợp>
 """
 
-# -------------------------------
-# Helper functions
-# -------------------------------
+# ------------------------------------------------------------------------------
+# Helper Functions
+# ------------------------------------------------------------------------------
 
 
 def tokenize(sentence):
-    """Whitespace tokens + 2-word + 3-word phrases."""
+    """Whitespace tokens + bigrams + trigrams."""
     words = sentence.strip().split()
     phrases = []
+
     for i in range(len(words)):
         phrases.append(words[i])
-        if i+1 < len(words):
+        if i + 1 < len(words):
             phrases.append(" ".join(words[i:i+2]))
-        if i+2 < len(words):
+        if i + 2 < len(words):
             phrases.append(" ".join(words[i:i+3]))
+
     return list(dict.fromkeys(phrases))
 
 
 def exact_lookup(phrases):
     found = {
         "fixed_phrases": {},
-        "sound_change": {}
+        "sound_change": {},
+        "vocabulary": {}
     }
+
+    fixed_dict = EXACT.get("fixed_phrases_modern_to_ancient", {})
+    sound_dict = EXACT.get("sound_change_modern_to_ancient", {})
+    vocab_dict = EXACT.get("vocabulary_modern_to_ancient", {})
+
     for p in phrases:
-        if p in EXACT["fixed_phrases"]:
-            found["fixed_phrases"][p] = EXACT["fixed_phrases"][p]
-        if p in EXACT["sound_change_modern_to_ancient"]:
-            found["sound_change"][p] = EXACT["sound_change_modern_to_ancient"][p]
+        if p in fixed_dict:
+            found["fixed_phrases"][p] = fixed_dict[p]
+        if p in sound_dict:
+            found["sound_change"][p] = sound_dict[p]
+        if p in vocab_dict:
+            found["vocabulary"][p] = vocab_dict[p]
+
     return found
 
 
 def rag_retrieve(sentence, phrases):
-    """Hybrid targeted retrieval strategy."""
     evidence = {}
 
-    # Sentence-level retrieval
+    # Sentence level rules (grammar + phonology)
     for t in ["grammar_pattern", "phonology_rule"]:
         docs = VECTORS[t].similarity_search(sentence, k=3)
         evidence[t] = [d.page_content for d in docs]
 
-    # Token-level retrieval
+    # Token-level retrieval for vocab + sound-change + fixed-phrase
     for t in ["vocab", "sound_change", "fixed_phrase"]:
         evidence[t] = []
         for p in phrases:
@@ -129,12 +160,10 @@ def rag_retrieve(sentence, phrases):
     return evidence
 
 
-# -------------------------------
-# Hybrid Translator
-# -------------------------------
-
+# ------------------------------------------------------------------------------
+# Translator Core
+# ------------------------------------------------------------------------------
 def translate_text(input_text):
-
     phrases = tokenize(input_text)
     exact = exact_lookup(phrases)
     rag = rag_retrieve(input_text, phrases)
@@ -152,26 +181,30 @@ def translate_text(input_text):
     model = ChatOpenAI(model="gpt-4o", temperature=0)
     result = model.invoke(prompt).content
 
-    # Try JSON parse
     try:
         return json.loads(result)
     except:
         return {
             "translation": result,
-            "explanation": "⚠ Model did not output strict JSON."
+            "explanation": "⚠️ Model did not output valid JSON."
         }
 
 
-# -------------------------------
+# ------------------------------------------------------------------------------
 # Flask Routes
-# -------------------------------
-
+# ------------------------------------------------------------------------------
 @app.route("/")
 def index():
     session.clear()
     return render_template("index.html")
 
 
+@app.route("/health")
+def health_check():
+    return jsonify({"status": "ok"})
+
+
+# ✅ Main Translator Endpoint
 @app.route("/translate", methods=["POST"])
 def api_translate():
     data = request.json
@@ -181,19 +214,82 @@ def api_translate():
         return jsonify({"error": "Missing 'text'"}), 400
 
     out = translate_text(text)
-    return jsonify(out)
+
+    return jsonify({
+        "success": True,
+        "translation": out["translation"],
+        "explanation": out.get("explanation", ""),
+        "confidence": 0.92,  # placeholder
+        "method": data.get("method", "llm_refined"),
+        "word_breakdown": []  # optional
+    })
 
 
-@app.route("/health", methods=["GET"])
-def health_check():
-    return jsonify({"status": "ok"})
+# ✅ System Stats (required by index.html)
+@app.route("/stats", methods=["GET"])
+def stats():
+    try:
+        vocab_count = len(EXACT.get("vocabulary_modern_to_ancient", {}))
+        fixed_phrase_count = len(
+            EXACT.get("fixed_phrases_modern_to_ancient", {}))
+        sound_change_count = len(
+            EXACT.get("sound_change_modern_to_ancient", {}))
+
+        collections_count = {}
+        for name, store in VECTORS.items():
+            try:
+                collections_count[name] = store._collection.count()
+            except:
+                collections_count[name] = 0
+
+        return jsonify({
+            "vocabulary_entries": vocab_count,
+            "fixed_phrases": fixed_phrase_count,
+            "sound_changes": sound_change_count,
+            "collections": collections_count
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# ✅ Alternative translations (required by index.html)
+@app.route("/alternatives", methods=["POST"])
+def alternatives():
+    data = request.json
+    text = data.get("text", "")
+    n = int(data.get("n", 5))
+
+    if not text:
+        return jsonify({"success": False, "error": "Missing text"})
+
+    model = ChatOpenAI(model="gpt-4o", temperature=0.8)
+
+    prompt = f"""
+Sinh ra {n} bản dịch cổ ngữ thế kỷ XVII cho câu sau:
+
+"{text}"
+
+Xuất ra danh sách JSON:
+[
+  {{"ancient": "...", "source": "model"}},
+  ...
+]
+"""
+
+    raw = model.invoke(prompt).content
+
+    try:
+        alts = json.loads(raw)
+        return jsonify({"success": True, "alternatives": alts})
+    except:
+        return jsonify({"success": False, "error": "Model output invalid JSON"})
 
 
 # deploy
 # if __name__ == "__main__":
 #     port = int(os.environ.get("PORT", 5000))
 #     app.run(host="0.0.0.0", port=port)
-
 # run local
 if __name__ == "__main__":
     app.run()

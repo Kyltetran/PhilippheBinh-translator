@@ -2,109 +2,113 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Philíphe Bỉnh Translator</title>
+    <title>Dịch cổ ngữ Philíphe Bỉnh</title>
 
     <style>
-        body {
-            font-family: "Inter", Arial, sans-serif;
-            background: #f5f6fa;
-            padding: 40px;
-            max-width: 900px;
-            margin: 0 auto;
+        body { 
+            font-family: sans-serif; 
+            max-width: 800px; 
+            margin: 40px auto; 
+            line-height: 1.5;
         }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-        }
-        textarea {
-            width: 100%;
-            height: 120px;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #dcdde1;
-            font-size: 15px;
-        }
-        button {
+        textarea { width: 100%; height: 120px; margin-top: 10px; }
+        button { 
+            padding: 10px 18px; 
+            margin-right: 10px; 
             margin-top: 15px;
-            padding: 12px 20px;
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 15px;
-        }
-        button:hover {
-            background: #2980b9;
+            cursor: pointer; 
         }
         #result-box {
-            margin-top: 30px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            border: 1px solid #dcdde1;
-            font-size: 15px;
+            margin-top: 30px; 
+            padding: 15px; 
+            border: 1px solid #ddd;
+            display: none;
         }
-        .result-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-        .json-output {
-            background: #ecf0f1;
-            padding: 15px;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            font-family: "JetBrains Mono", monospace;
-            font-size: 14px;
+        #error-box {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid red;
+            color: red;
+            display: none;
         }
     </style>
 </head>
 
 <body>
 
-<h1>⚜️ Philíphe Bỉnh Translator ⚜️</h1>
+<h2>Dịch sang cổ ngữ Philíphe Bỉnh</h2>
 
-<textarea id="inputText" placeholder="Nhập câu tiếng Việt hiện đại…"></textarea>
+<label>Nhập văn bản tiếng Việt hiện đại:</label>
+<textarea id="modern-text" placeholder="VD: Tôi đi chợ mua cá..."></textarea>
+
 <br>
-<button onclick="sendTranslate()">Dịch ngay</button>
 
-<div id="result-box" style="display:none;">
-    <div class="result-title">✅ Kết quả dịch</div>
-    <div id="translation" class="json-output"></div>
+<button onclick="translateFast()">Dịch nhanh (rule-based)</button>
+<button onclick="translateSmart()">Dịch AI tinh chỉnh (LLM)</button>
 
-    <div class="result-title" style="margin-top:20px;">📘 Giải thích</div>
-    <div id="explanation" class="json-output"></div>
+<div id="error-box"></div>
+
+<div id="result-box">
+    <h3>Bản dịch:</h3>
+    <div id="translation"></div>
+
+    <h3>Giải thích:</h3>
+    <div id="explanation"></div>
 </div>
 
 <script>
-async function sendTranslate() {
-    const text = document.getElementById("inputText").value;
-    if (!text) return;
+// ✅ GLOBAL FUNCTION: FAST TRANSLATION
+window.translateFast = async function () {
+    await runTranslate("rule_based");
+};
 
-    let res = await fetch("/translate", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ text })
-    });
+// ✅ GLOBAL FUNCTION: SMART TRANSLATION
+window.translateSmart = async function () {
+    await runTranslate("llm_refined");
+};
 
-    let out = await res.json();
+// ✅ CORE FUNCTION USED BY BOTH MODES
+async function runTranslate(method) {
 
-    // extract
-    let translation = out.translation || "(không có dữ liệu)";
-    let explanation = out.explanation || "(không có dữ liệu)";
+    const text = document.getElementById("modern-text").value.trim();
+    const errorBox = document.getElementById("error-box");
+    const resultBox = document.getElementById("result-box");
 
-    // remove ```json blocks if model returns them
-    translation = translation.replace(/```json/g, "").replace(/```/g, "");
-    explanation = explanation.replace(/```json/g, "").replace(/```/g, "");
+    errorBox.style.display = "none";
+    resultBox.style.display = "none";
 
-    // show
-    document.getElementById("result-box").style.display = "block";
-    document.getElementById("translation").textContent = translation;
-    document.getElementById("explanation").textContent = explanation;
+    if (!text) {
+        errorBox.textContent = "⚠️ Vui lòng nhập văn bản cần dịch";
+        errorBox.style.display = "block";
+        return;
+    }
+
+    try {
+        const response = await fetch("/translate", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ text: text, method: method })
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+            errorBox.textContent = "Lỗi: " + (data.error || "Không rõ nguyên nhân");
+            errorBox.style.display = "block";
+            return;
+        }
+
+        // ✅ Display result
+        document.getElementById("translation").textContent = data.translation;
+        document.getElementById("explanation").textContent = data.explanation || "—";
+        resultBox.style.display = "block";
+
+    } catch (err) {
+        errorBox.textContent = "Lỗi kết nối: " + err.message;
+        errorBox.style.display = "block";
+    }
 }
+
 </script>
 
 </body>
