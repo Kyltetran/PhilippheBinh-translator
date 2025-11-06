@@ -1,568 +1,424 @@
-# translator.py
-"""
-Safe hybrid translator (single-file)
-- Produces 5 method-specific translations + 1 hybrid
-- Uses local semantic search only (Chroma collections)
-- No LLM calls, no hallucination
-- Idioms allowed by meaning but require high similarity
-- Cites quotes/contexts from datasets when available
-"""
-
-import re
-from typing import List, Dict, Any, Tuple, Optional
+import json
+import os
+from typing import List, Dict, Tuple, Optional
+from dataclasses import dataclass
+from langchain_chroma import Chroma
+from langchain_openai import ChatOpenAI
 
 
-def _safe_similarity_search_with_score(collection, query: str, k: int = 4) -> List[Tuple[Any, float]]:
-    """
-    Helper: try to call similarity_search_with_score if available,
-    otherwise fall back to similarity_search and assign pseudo-scores.
-    Returns list of (doc, score) sorted descending by score.
-    """
-    try:
-        results = collection.similarity_search_with_score(query, k=k)
-        # expected format: list of (doc, score)
-        return results
-    except Exception:
+@dataclass
+class TranslationCandidate:
+    """Lưu trữ ứng viên dịch thuật"""
+    original: str
+    translated: str
+    method: str  # 'exact', 'sound', 'vocab', 'grammar', 'idiom'
+    source: str
+    quote: str
+    confidence: float
+
+
+class PhilippeBinhTranslator:
+    def __init__(self, data_dir: str = "data", chroma_path: str = "./chroma_db"):
+        self.data_dir = data_dir
+        self.chroma_path = chroma_path
+        self.client = Chroma.PersistentClient(path=chroma_path)
+        self.openai_client = ChatOpenAI()
+
+        # Load all data
+        self.exact_dicts = self._load_json("exact_dicts.json")
+        self.sound_changes = self._load_json("sound_changes.json")
+        self.vocabulary = self._load_json("vocabulary.json")
+        self.grammar_patterns = self._load_json("grammar_patterns.json")
+        self.fixed_phrases = self._load_json("fixed_phrases.json")
+
+        # Get collections (handle missing collections gracefully)
         try:
-            docs = collection.similarity_search(query, k=k)
-            # fallback: assign descending heuristic scores
-            out = []
-            initial = 0.6
-            step = 0.08
-            for i, d in enumerate(docs):
-                score = initial - i * step
-                out.append((d, max(score, 0.0)))
-            return out
-        except Exception:
-            return []
+            self.vocab_collection = self.client.get_collection("vocabulary")
+        except:
+            print("⚠️  Warning: vocabulary collection not found")
+            self.vocab_collection = None
 
+        try:
+            self.grammar_collection = self.client.get_collection(
+                "grammar_patterns")
+        except:
+            print("⚠️  Warning: grammar_patterns collection not found")
+            self.grammar_collection = None
 
-class Translator:
-    def __init__(self, exact_dicts: Dict[str, Dict[str, str]], chroma_collections: Dict[str, Any],
-                 sound_changes_list: List[Dict] = None, vocabulary_list: List[Dict] = None,
-                 grammar_list: List[Dict] = None, fixed_phrases_list: List[Dict] = None):
+        try:
+            self.phrase_collection = self.client.get_collection(
+                "fixed_phrases")
+        except:
+            print("⚠️  Warning: fixed_phrases collection not found")
+            self.phrase_collection = None
+
+    def _load_json(self, filename: str) -> Dict:
+        """Load JSON file từ data directory"""
+        path = os.path.join(self.data_dir, filename)
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+
+    def _get_llm_synonyms(self, word: str, context: str = "") -> List[str]:
+        """Dùng LLM tìm từ đồng nghĩa/gần nghĩa trong tiếng Việt"""
+        prompt = f"""Cho từ/cụm từ tiếng Việt: "{word}"
+{f'Trong ngữ cảnh: "{context}"' if context else ''}
+
+Hãy liệt kê các từ đồng nghĩa, gần nghĩa, hoặc cách diễn đạt tương tự trong tiếng Việt.
+Chỉ trả về danh sách các từ, mỗi từ một dòng, không giải thích.
+Tối đa 10 từ."""
+
+        response = self.openai_client.chat.completions.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.3
+        )
+
+        synonyms = response.choices[0].message.content.strip().split('\n')
+        return [s.strip('- ').strip() for s in synonyms if s.strip()]
+
+    def translate_word_exact(self, word: str) -> Optional[TranslationCandidate]:
+        """Phương pháp 1: Exact match từ exact_dicts"""
+        # Sound change exact
+        if word in self.exact_dicts.get("sound_change_modern_to_ancient", {}):
+            ancient = self.exact_dicts["sound_change_modern_to_ancient"][word]
+            return TranslationCandidate(
+                original=word,
+                translated=ancient,
+                method="exact_sound",
+                source="exact_dicts.json",
+                quote="",
+                confidence=1.0
+            )
+
+        # Vocabulary exact
+        if word in self.exact_dicts.get("vocabulary_modern_to_ancient", {}):
+            ancient = self.exact_dicts["vocabulary_modern_to_ancient"][word]
+            return TranslationCandidate(
+                original=word,
+                translated=ancient,
+                method="exact_vocab",
+                source="exact_dicts.json",
+                quote="",
+                confidence=1.0
+            )
+
+        return None
+
+    def translate_word_sound(self, word: str) -> List[TranslationCandidate]:
+        """Phương pháp 2: Sound change rules
+        Không dùng synonym vì đây là quy tắc âm học
         """
-        exact_dicts: dict loaded from exact_dicts.json, containing keys:
-            - vocabulary_modern_to_ancient
-            - sound_change_modern_to_ancient
-            - fixed_phrases_modern_to_ancient
-            ... (and reverse maps)
-        chroma_collections: dict of Chroma collections { 'vocab', 'sound_change', 'grammar_pattern', 'fixed_phrase' }
-        lists: optional lists loaded from the processed JSON (sound_changes.json, vocabulary.json, etc.)
-        """
-        self.exact = exact_dicts or {}
-        self.chroma = chroma_collections or {}
+        candidates = []
 
-        # Lowercase keys for robust matching
-        self._normalize_exact_keys()
+        for item in self.sound_changes:
+            modern = item.get("modern", "")
+            ancient = item.get("ancient", "")
+            rule = item.get("rule", "")
 
-        # Build simple phonology rules from sound_changes_list if provided
-        self.sound_changes_map = {}
-        if sound_changes_list:
-            for sc in sound_changes_list:
-                # sc expected to have 'modern' and 'ancient'
-                modern = str(sc.get("modern", "")).strip().lower()
-                ancient = str(sc.get("ancient", "")).strip()
-                if modern:
-                    self.sound_changes_map[modern] = ancient
+            # Kiểm tra nếu word chứa âm modern
+            if modern in word:
+                # Thay thế âm
+                translated = word.replace(modern, ancient)
+                candidates.append(TranslationCandidate(
+                    original=word,
+                    translated=translated,
+                    method="sound_rule",
+                    source=f"Rule: {rule}",
+                    quote=item.get("quote", ""),
+                    confidence=0.7  # Lower confidence vì có thể không chính xác 100%
+                ))
 
-        # Keep lists for citations if provided
-        self.sound_changes_list = sound_changes_list or []
-        self.vocabulary_list = vocabulary_list or []
-        self.grammar_list = grammar_list or []
-        self.fixed_phrases_list = fixed_phrases_list or []
+        return candidates
 
-        # thresholds (tunable)
-        # accept vocab semantic matches above this
-        self.vocab_semantic_threshold = 0.35
-        self.idiom_semantic_threshold = 0.70      # idioms require high similarity
-        self.max_ngram = 3                        # check up to trigrams
+    def translate_word_vocab(self, word: str, sentence: str = "") -> List[TranslationCandidate]:
+        """Phương pháp 3: Vocabulary với synonym search"""
+        candidates = []
 
-    def _normalize_exact_keys(self):
-        # Lowercase keys for each mapping inside exact
-        for k, v in list(self.exact.items()):
-            new = {}
-            for mk, mv in v.items():
-                new[mk.strip().lower()] = mv
-            self.exact[k] = new
+        # 1. Tìm trực tiếp trong vocabulary.json
+        for item in self.vocabulary:
+            if word in item.get("modern", []):
+                candidates.append(TranslationCandidate(
+                    original=word,
+                    translated=item["ancient"],
+                    method="vocab_direct",
+                    source="vocabulary.json",
+                    quote=item.get("quote", [{}])[0].get("context", ""),
+                    confidence=0.9
+                ))
 
-    # -------------------------
-    # Tokenization & n-grams
-    # -------------------------
-    def tokenize_with_ngrams(self, text: str) -> List[str]:
-        # Simple whitespace tokenization plus punctuation, preserve order.
-        words = re.findall(r'\w+|[^\w\s]', text, re.UNICODE)
-        normalized_words = words  # keep punctuation tokens too
-        ngrams = []
-        L = len(normalized_words)
-        for i in range(L):
-            # single token
-            ngrams.append(normalized_words[i])
-            # bigram, trigram (without crossing punctuation ideally)
-            for n in range(2, self.max_ngram + 1):
-                if i + n <= L:
-                    chunk = normalized_words[i:i+n]
-                    # skip chunks that include punctuation-only tokens
-                    if all(not re.match(r'^[^\w\s]$', c) for c in chunk):
-                        ngrams.append(" ".join(chunk))
-        # Deduplicate preserving first occurrence
-        seen = set()
-        out = []
-        for g in ngrams:
-            key = g.strip()
-            if key and key not in seen:
-                seen.add(key)
-                out.append(g)
-        return out
+        # 2. Nếu không tìm thấy, dùng LLM tìm synonym
+        if not candidates:
+            synonyms = self._get_llm_synonyms(word, sentence)
 
-    # -------------------------
-    # 1) Exact dictionary match
-    # -------------------------
-    def exact_based_translation(self, text: str) -> Dict:
-        """
-        If any modern substring (word or phrase) exactly matches keys in exact dicts,
-        replace those substrings with the exact ancient equivalents.
-        Returns candidate translation and citations.
-        """
-        tokens = self.tokenize_with_ngrams(text)
-        working = text
-        citations = []
-        found_any = False
+            # Search trong ChromaDB với synonyms
+            for syn in synonyms:
+                results = self.vocab_collection.query(
+                    query_texts=[syn],
+                    n_results=3
+                )
 
-        # Replace longer ngrams first (to avoid partial overlaps)
-        tokens_sorted = sorted(tokens, key=lambda s: -len(s.split()))
-        for tok in tokens_sorted:
-            key = tok.strip().lower()
-            # check fixed phrases first (exact meaning match)
-            fp_map = self.exact.get("fixed_phrases_modern_to_ancient", {})
-            if key in fp_map:
-                ancient = fp_map[key]
-                # replace whole-word occurrences (case-insensitive)
-                working = re.sub(r'\b' + re.escape(tok) + r'\b',
-                                 ancient, working, flags=re.IGNORECASE)
-                citations.append({"source": "fixed_phrases",
-                                 "modern": tok, "ancient": ancient})
-                found_any = True
-            # vocabulary exact
-            vocab_map = self.exact.get("vocabulary_modern_to_ancient", {})
-            if key in vocab_map:
-                ancient = vocab_map[key]
-                working = re.sub(r'\b' + re.escape(tok) + r'\b',
-                                 ancient, working, flags=re.IGNORECASE)
-                citations.append(
-                    {"source": "vocabulary", "modern": tok, "ancient": ancient})
-                found_any = True
-            # sound change exact (word-level)
-            sc_map = self.exact.get("sound_change_modern_to_ancient", {})
-            if key in sc_map:
-                ancient = sc_map[key]
-                working = re.sub(r'\b' + re.escape(tok) + r'\b',
-                                 ancient, working, flags=re.IGNORECASE)
-                citations.append(
-                    {"source": "sound_change", "modern": tok, "ancient": ancient})
-                found_any = True
+                if results['documents'] and results['documents'][0]:
+                    for i, doc in enumerate(results['documents'][0]):
+                        metadata = results['metadatas'][0][i]
+                        distance = results['distances'][0][i]
 
-        return {
-            "translation": working,
-            "confidence": 1.0 if found_any else 0.0,
-            "citations": citations,
-            "method": "exact"
+                        candidates.append(TranslationCandidate(
+                            original=word,
+                            translated=metadata.get('ancient', ''),
+                            method="vocab_synonym",
+                            source=f"Via synonym: {syn}",
+                            quote=metadata.get('quote', ''),
+                            # Giảm confidence theo khoảng cách
+                            confidence=max(0.3, 0.9 - distance)
+                        ))
+
+        return candidates
+
+    def translate_phrase_grammar(self, sentence: str) -> List[TranslationCandidate]:
+        """Phương pháp 4: Grammar patterns"""
+        candidates = []
+
+        # 1. Tìm trực tiếp
+        for item in self.grammar_patterns:
+            modern = item.get("modern", "")
+            if modern in sentence:
+                candidates.append(TranslationCandidate(
+                    original=modern,
+                    translated=item["ancient"],
+                    method="grammar_direct",
+                    source="grammar_patterns.json",
+                    quote=item.get("quote", [{}])[0].get("context", ""),
+                    confidence=0.9
+                ))
+
+        # 2. Tìm với synonym
+        if not candidates:
+            # Tách sentence thành các cụm từ ngữ pháp có thể
+            phrases = self._extract_grammar_phrases(sentence)
+
+            for phrase in phrases:
+                synonyms = self._get_llm_synonyms(phrase, sentence)
+
+                for syn in synonyms:
+                    results = self.grammar_collection.query(
+                        query_texts=[syn],
+                        n_results=2
+                    )
+
+                    if results['documents'] and results['documents'][0]:
+                        for i, doc in enumerate(results['documents'][0]):
+                            metadata = results['metadatas'][0][i]
+                            distance = results['distances'][0][i]
+
+                            candidates.append(TranslationCandidate(
+                                original=phrase,
+                                translated=metadata.get('ancient', ''),
+                                method="grammar_synonym",
+                                source=f"Via synonym: {syn}",
+                                quote=metadata.get('quote', ''),
+                                confidence=max(0.3, 0.85 - distance)
+                            ))
+
+        return candidates
+
+    def translate_phrase_idiom(self, sentence: str) -> List[TranslationCandidate]:
+        """Phương pháp 5: Fixed phrases/idioms"""
+        candidates = []
+
+        # 1. Tìm trực tiếp
+        for item in self.fixed_phrases:
+            modern = item.get("modern", "")
+            if modern.lower() in sentence.lower():
+                candidates.append(TranslationCandidate(
+                    original=modern,
+                    translated=item["ancient"],
+                    method="idiom_direct",
+                    source="fixed_phrases.json",
+                    quote=item.get("quote", [{}])[0].get("context", ""),
+                    confidence=0.95
+                ))
+
+        # 2. Tìm với LLM semantic matching
+        if not candidates:
+            # Dùng LLM tìm idiom tương tự
+            idiom_candidates = self._find_similar_idioms(sentence)
+            candidates.extend(idiom_candidates)
+
+        return candidates
+
+    def _find_similar_idioms(self, sentence: str) -> List[TranslationCandidate]:
+        """Dùng LLM tìm thành ngữ tương tự"""
+        candidates = []
+
+        # Lấy danh sách idioms
+        idiom_list = "\n".join(
+            [f"- {item['modern']}" for item in self.fixed_phrases[:20]])
+
+        prompt = f"""Câu: "{sentence}"
+
+Danh sách thành ngữ có sẵn:
+{idiom_list}
+
+Có thành ngữ nào trong danh sách có ý nghĩa giống hoặc liên quan đến câu trên không?
+Nếu có, trả về tên thành ngữ đó. Nếu không, trả về "NONE"."""
+
+        response = self.openai_client.chat.completions.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.2
+        )
+
+        result = response.choices[0].message.content.strip()
+
+        if result != "NONE":
+            # Tìm idiom trong database
+            for item in self.fixed_phrases:
+                if item["modern"] in result:
+                    candidates.append(TranslationCandidate(
+                        original=sentence,
+                        translated=item["ancient"],
+                        method="idiom_semantic",
+                        source=f"Semantic match: {item['modern']}",
+                        quote=item.get("quote", [{}])[0].get("context", ""),
+                        confidence=0.6
+                    ))
+
+        return candidates
+
+    def _extract_grammar_phrases(self, sentence: str) -> List[str]:
+        """Trích xuất các cụm từ ngữ pháp có thể từ câu"""
+        # Simple heuristic: n-grams
+        words = sentence.split()
+        phrases = []
+
+        for n in range(2, min(6, len(words) + 1)):
+            for i in range(len(words) - n + 1):
+                phrase = " ".join(words[i:i+n])
+                phrases.append(phrase)
+
+        return phrases
+
+    def translate_sentence(self, sentence: str) -> Dict:
+        """Dịch cả câu với tất cả phương pháp"""
+        results = {
+            "original": sentence,
+            "translations": {
+                "exact": [],
+                "sound": [],
+                "vocab": [],
+                "grammar": [],
+                "idiom": [],
+                "combined": ""
+            }
         }
 
-    # -------------------------
-    # 2) Phonology / Sound-change
-    # -------------------------
-    def phonology_based_translation(self, text: str) -> Dict:
-        """
-        Apply two phonology strategies:
-        - exact sound_change mapping for whole words (from exact_dicts or sound_changes_list)
-        - fallback: rule-based regex replacements from sound_changes_list (if available)
-        """
-        tokens = re.findall(r'\w+|[^\w\s]', text, re.UNICODE)
-        out_tokens = []
-        citations = []
+        words = sentence.split()
 
-        for token in tokens:
-            if re.match(r'^[^\w\s]$', token):  # punctuation
-                out_tokens.append(token)
-                continue
+        # 1. Exact matches cho từng từ
+        for word in words:
+            exact = self.translate_word_exact(word)
+            if exact:
+                results["translations"]["exact"].append(exact)
 
-            lower = token.lower()
-            mapped = None
+        # 2. Sound changes
+        for word in words:
+            sounds = self.translate_word_sound(word)
+            results["translations"]["sound"].extend(sounds)
 
-            # 1) exact sound change mapping (exact_dict)
-            sc_map = self.exact.get("sound_change_modern_to_ancient", {})
-            if lower in sc_map:
-                mapped = sc_map[lower]
-                citations.append(
-                    {"source": "sound_change_exact", "modern": token, "ancient": mapped})
-                out_tokens.append(mapped)
-                continue
+        # 3. Vocabulary
+        for word in words:
+            vocabs = self.translate_word_vocab(word, sentence)
+            results["translations"]["vocab"].extend(vocabs)
 
-            # 2) look in provided sound_changes_list heuristic map
-            if lower in self.sound_changes_map:
-                mapped = self.sound_changes_map[lower]
-                citations.append(
-                    {"source": "sound_change_list", "modern": token, "ancient": mapped})
-                out_tokens.append(mapped)
-                continue
+        # 4. Grammar patterns
+        grammars = self.translate_phrase_grammar(sentence)
+        results["translations"]["grammar"].extend(grammars)
 
-            # 3) regex-style phonology rules (best-effort, low confidence)
-            transformed = self._apply_phonology_regex(token)
-            if transformed != token:
-                citations.append({"source": "phonology_rules",
-                                 "modern": token, "ancient": transformed})
-                out_tokens.append(transformed)
-                continue
+        # 5. Idioms
+        idioms = self.translate_phrase_idiom(sentence)
+        results["translations"]["idiom"].extend(idioms)
 
-            # fallback: keep
-            out_tokens.append(token)
+        # 6. Combined translation
+        results["translations"]["combined"] = self._create_combined_translation(
+            sentence, results["translations"]
+        )
 
-        return {
-            "translation": " ".join(out_tokens),
-            "confidence": 0.7,
-            "citations": citations,
-            "method": "phonology"
-        }
+        return results
 
-    def _apply_phonology_regex(self, w: str) -> str:
-        # Best-effort replacements — conservative and reversible
-        s = w
-        # Example simple reversible rules (safe, conservative)
-        # These are intentionally few — you can extend with more precise rules
-        rules = [
-            (r'iê\b', 'ê'),   # iê -> ê (reverse of diphthongization)
-            (r'uyê\b', 'uê'),
-            (r'uô\b', 'ô'),
-            (r'ươ\b', 'ơ'),
-            (r'\bay\b', 'ăy'),
+    def _create_combined_translation(self, sentence: str, translations: Dict) -> str:
+        """Kết hợp tất cả phương pháp để tạo bản dịch tối ưu"""
+        # Sort by confidence
+        all_candidates = []
+        for method, candidates in translations.items():
+            if method != "combined":
+                all_candidates.extend(candidates)
+
+        # Group by original word/phrase
+        grouped = {}
+        for cand in all_candidates:
+            if cand.original not in grouped:
+                grouped[cand.original] = []
+            grouped[cand.original].append(cand)
+
+        # Pick best candidate for each
+        best_translations = {}
+        for original, candidates in grouped.items():
+            best = max(candidates, key=lambda x: x.confidence)
+            best_translations[original] = best.translated
+
+        # Replace in sentence (longest first to avoid partial matches)
+        result = sentence
+        for original in sorted(best_translations.keys(), key=len, reverse=True):
+            result = result.replace(original, best_translations[original])
+
+        return result
+
+    def format_output(self, results: Dict) -> str:
+        """Format kết quả đẹp để hiển thị"""
+        output = [
+            f"Câu gốc: {results['original']}",
+            "",
+            "=" * 60,
+            ""
         ]
-        for pat, rep in rules:
-            s2 = re.sub(pat, rep, s, flags=re.IGNORECASE)
-            if s2 != s:
-                return s2
-        return s
 
-    # -------------------------
-    # 3) Vocabulary-based (synonyms via local semantic search)
-    # -------------------------
-    def vocabulary_based_translation(self, text: str) -> Dict:
-        """
-        For each token/ngram, search the vocab collection (semantic search)
-        to find a modern -> ancient mapping. Use a threshold to avoid bad matches.
-        """
-        tokens = self.tokenize_with_ngrams(text)
-        working = text
-        citations = []
-        found = False
-
-        # attempt longer ngrams first
-        tokens_sorted = sorted(tokens, key=lambda s: -len(s.split()))
-        for tok in tokens_sorted:
-            key = tok.strip()
-            if not key or re.match(r'^[^\w\s]+$', key):
-                continue
-
-            # check exact vocabulary mapping first
-            vm = self.exact.get("vocabulary_modern_to_ancient", {})
-            if key.lower() in vm:
-                ancient = vm[key.lower()]
-                working = re.sub(r'\b' + re.escape(key) + r'\b',
-                                 ancient, working, flags=re.IGNORECASE)
-                citations.append(
-                    {"source": "vocab_exact", "modern": key, "ancient": ancient})
-                found = True
-                continue
-
-            # semantic search inside vocab collection
-            vocab_coll = self.chroma.get("vocab")
-            if vocab_coll:
-                results = _safe_similarity_search_with_score(
-                    vocab_coll, key, k=5)
-                if results:
-                    best_doc, best_score = results[0]
-                    if best_score >= self.vocab_semantic_threshold:
-                        # get ancient form from doc.metadata or doc.page_content
-                        ancient_candidate = None
-                        meta = getattr(best_doc, "metadata", {}) or {}
-                        page_content = getattr(best_doc, "page_content", None)
-                        # prefer metadata.ancient if exists, else page_content
-                        if meta.get("ancient"):
-                            ancient_candidate = meta.get("ancient")
-                        elif page_content:
-                            ancient_candidate = page_content
-                        else:
-                            ancient_candidate = vm.get(best_doc, None)
-
-                        if ancient_candidate:
-                            working = re.sub(
-                                r'\b' + re.escape(key) + r'\b', ancient_candidate, working, flags=re.IGNORECASE)
-                            citations.append(
-                                {"source": "vocab_semantic", "modern": key, "ancient": ancient_candidate, "score": best_score})
-                            found = True
-                            continue
-
-        return {
-            "translation": working,
-            "confidence": 0.85 if found else 0.0,
-            "citations": citations,
-            "method": "vocabulary_semantic"
+        methods = {
+            "exact": "1. EXACT MATCH",
+            "sound": "2. SOUND CHANGES",
+            "vocab": "3. VOCABULARY",
+            "grammar": "4. GRAMMAR PATTERNS",
+            "idiom": "5. IDIOMS/FIXED PHRASES"
         }
 
-    # -------------------------
-    # 4) Grammar-based translation (pattern replacements)
-    # -------------------------
-    def grammar_based_translation(self, text: str) -> Dict:
-        """
-        Use grammar_pattern collection to find sentence-level pattern matches
-        and apply replacements. Conservative: require moderately-high similarity.
-        """
-        grammar_coll = self.chroma.get("grammar_pattern")
-        if not grammar_coll:
-            return {"translation": text, "confidence": 0.0, "citations": [], "method": "grammar"}
+        for method, title in methods.items():
+            candidates = results["translations"][method]
+            if candidates:
+                output.append(title)
+                output.append("-" * 60)
+                for cand in candidates:
+                    output.append(f"  {cand.original} → {cand.translated}")
+                    output.append(f"  Phương pháp: {cand.method}")
+                    output.append(f"  Độ tin cậy: {cand.confidence:.2f}")
+                    if cand.quote:
+                        output.append(f"  Trích dẫn: {cand.quote[:100]}...")
+                    output.append("")
 
-        results = _safe_similarity_search_with_score(grammar_coll, text, k=4)
-        working = text
-        citations = []
-        applied = False
+        output.extend([
+            "=" * 60,
+            "6. BẢN DỊCH KẾT HỢP",
+            "-" * 60,
+            results["translations"]["combined"],
+            ""
+        ])
 
-        for doc, score in results:
-            if score < 0.35:
-                continue
-            meta = getattr(doc, "metadata", {}) or {}
-            modern_pat = meta.get("modern", meta.get("modern_form", ""))
-            ancient_pat = meta.get("ancient", meta.get("ancient_form", ""))
-            if modern_pat and ancient_pat:
-                # replace occurrences of modern pattern conservatively
-                working_new = working.replace(modern_pat, ancient_pat)
-                if working_new != working:
-                    working = working_new
-                    citations.append(
-                        {"source": "grammar", "modern": modern_pat, "ancient": ancient_pat, "score": score})
-                    applied = True
+        return "\n".join(output)
 
-        return {
-            "translation": working,
-            "confidence": 0.6 if applied else 0.0,
-            "citations": citations,
-            "method": "grammar"
-        }
 
-    # -------------------------
-    # 5) Idiom-based (fixed phrases) — allow meaning-match but strict threshold
-    # -------------------------
-    def idiom_based_translation(self, text: str) -> Dict:
-        """
-        Try to map idioms (fixed phrases). We allow:
-         - exact modern string matches (safe)
-         - semantic matches via fixed_phrase collection BUT require HIGH threshold
-        """
-        working = text
-        citations = []
-        found = False
+# Example usage
+if __name__ == "__main__":
+    translator = PhilippeBinhTranslator()
 
-        # 1) exact modern -> ancient via exact_dict
-        fp_map = self.exact.get("fixed_phrases_modern_to_ancient", {})
-        # check longer phrases first
-        tokens = sorted(self.tokenize_with_ngrams(
-            text), key=lambda s: -len(s.split()))
-        for tok in tokens:
-            key = tok.strip().lower()
-            if key in fp_map:
-                ancient = fp_map[key]
-                working = re.sub(r'\b' + re.escape(tok) + r'\b',
-                                 ancient, working, flags=re.IGNORECASE)
-                citations.append(
-                    {"source": "fixed_exact", "modern": tok, "ancient": ancient})
-                found = True
-
-        if found:
-            return {"translation": working, "confidence": 0.98, "citations": citations, "method": "idiom_exact"}
-
-        # 2) semantic search on fixed_phrase collection
-        fixed_coll = self.chroma.get("fixed_phrase")
-        if fixed_coll:
-            results = _safe_similarity_search_with_score(fixed_coll, text, k=5)
-            if results:
-                best_doc, best_score = results[0]
-                if best_score >= self.idiom_semantic_threshold:
-                    meta = getattr(best_doc, "metadata", {}) or {}
-                    ancient = meta.get("ancient") or getattr(
-                        best_doc, "page_content", None)
-                    if ancient:
-                        # apply only if it's safe (score high)
-                        working = ancient
-                        citations.append(
-                            {"source": "fixed_semantic", "modern_query": text, "ancient": ancient, "score": best_score})
-                        return {"translation": working, "confidence": best_score, "citations": citations, "method": "idiom_semantic"}
-
-        return {"translation": working, "confidence": 0.0, "citations": [], "method": "idiom_none"}
-
-    # -------------------------
-    # Hybrid combination: per-word best candidate
-    # -------------------------
-    def hybrid_translation(self, text: str) -> Dict:
-        """
-        Build per-word candidates from exact, vocabulary, sound_change, phonology.
-        For each word/phrase choose the best candidate according to a priority
-        and assemble final text. Also add a combined citations list.
-        """
-        # produce candidate maps per token (use base tokenization)
-        base_tokens = re.findall(r'\w+|[^\w\s]', text, re.UNICODE)
-        final_tokens = []
-        all_citations = []
-        confidences = []
-
-        for token in base_tokens:
-            if re.match(r'^[^\w\s]$', token):  # punctuation
-                final_tokens.append(token)
-                continue
-
-            lowered = token.lower()
-
-            # Candidate 1: exact fixed phrase (if token is multiword this won't match single token)
-            exact_v = self.exact.get(
-                "fixed_phrases_modern_to_ancient", {}).get(lowered)
-            if exact_v:
-                final_tokens.append(exact_v)
-                all_citations.append(
-                    {"source": "exact_fixed", "modern": token, "ancient": exact_v})
-                confidences.append(1.0)
-                continue
-
-            # Candidate 2: exact vocabulary
-            exact_vocab = self.exact.get(
-                "vocabulary_modern_to_ancient", {}).get(lowered)
-            if exact_vocab:
-                final_tokens.append(exact_vocab)
-                all_citations.append(
-                    {"source": "exact_vocab", "modern": token, "ancient": exact_vocab})
-                confidences.append(0.95)
-                continue
-
-            # Candidate 3: exact sound change
-            exact_sc = self.exact.get(
-                "sound_change_modern_to_ancient", {}).get(lowered)
-            if exact_sc:
-                final_tokens.append(exact_sc)
-                all_citations.append(
-                    {"source": "exact_sound_change", "modern": token, "ancient": exact_sc})
-                confidences.append(0.9)
-                continue
-
-            # Candidate 4: semantic vocab search
-            best_vocab_candidate, score = self._semantic_vocab_lookup(token)
-            if best_vocab_candidate and score >= self.vocab_semantic_threshold:
-                final_tokens.append(best_vocab_candidate)
-                all_citations.append(
-                    {"source": "semantic_vocab", "modern": token, "ancient": best_vocab_candidate, "score": score})
-                confidences.append(0.85)
-                continue
-
-            # Candidate 5: phonology regex / heuristic
-            phon = self._apply_phonology_regex(token)
-            if phon != token:
-                final_tokens.append(phon)
-                all_citations.append(
-                    {"source": "phonology_rule", "modern": token, "ancient": phon})
-                confidences.append(0.65)
-                continue
-
-            # Fallback: keep original
-            final_tokens.append(token)
-            confidences.append(0.3)
-
-        hybrid_text = " ".join(final_tokens)
-        avg_conf = sum(confidences) / len(confidences) if confidences else 0.0
-
-        return {
-            "translation": hybrid_text,
-            "confidence": round(avg_conf, 2),
-            "citations": all_citations,
-            "method": "hybrid"
-        }
-
-    def _semantic_vocab_lookup(self, token: str) -> Tuple[Optional[str], float]:
-        """
-        Search vocab collection for semantic match for token.
-        Return (ancient_candidate, score) if found, else (None, 0).
-        """
-        vocab_coll = self.chroma.get("vocab")
-        if not vocab_coll:
-            return None, 0.0
-
-        results = _safe_similarity_search_with_score(vocab_coll, token, k=6)
-        if not results:
-            return None, 0.0
-
-        best_doc, best_score = results[0]
-        meta = getattr(best_doc, "metadata", {}) or {}
-        ancient = meta.get("ancient")
-        # fallback: page_content might hold the ancient or gloss
-        if not ancient:
-            ancient = getattr(best_doc, "page_content", None)
-
-        if ancient:
-            return ancient, best_score
-        return None, 0.0
-
-    # -------------------------
-    # Top-level API: produce 5 candidates + hybrid
-    # -------------------------
-    def translate_all(self, text: str) -> Dict[str, Any]:
-        """
-        Returns:
-        {
-          "exact": {...},
-          "phonology": {...},
-          "vocabulary": {...},
-          "grammar": {...},
-          "idiom": {...},
-          "hybrid": {...},
-          "combined_explanation": "..."
-        }
-        Each entry contains translation, confidence, citations, method
-        """
-        # 1 exact
-        exact_cand = self.exact_based_translation(text)
-
-        # 2 phonology
-        phon_cand = self.phonology_based_translation(text)
-
-        # 3 vocabulary semantic
-        vocab_cand = self.vocabulary_based_translation(text)
-
-        # 4 grammar
-        gram_cand = self.grammar_based_translation(text)
-
-        # 5 idiom
-        idiom_cand = self.idiom_based_translation(text)
-
-        # hybrid
-        hybrid_cand = self.hybrid_translation(text)
-
-        # combined explanation: list unique citations
-        combined_citations = []
-        seen = set()
-        for cset in [exact_cand, phon_cand, vocab_cand, gram_cand, idiom_cand, hybrid_cand]:
-            for cit in cset.get("citations", []):
-                key = (cit.get("source"), cit.get(
-                    "modern"), cit.get("ancient"))
-                if key not in seen:
-                    seen.add(key)
-                    combined_citations.append(cit)
-
-        explanation = {
-            "summary": f"Produced 5 method-specific candidates and 1 hybrid. Hybrid prioritized exact>vocab>sound>phonology.",
-            "citations": combined_citations
-        }
-
-        return {
-            "exact": exact_cand,
-            "phonology": phon_cand,
-            "vocabulary": vocab_cand,
-            "grammar": gram_cand,
-            "idiom": idiom_cand,
-            "hybrid": hybrid_cand,
-            "explanation": explanation
-        }
+    # Test
+    sentence = "Tôi đang học tiếng Việt cổ"
+    results = translator.translate_sentence(sentence)
+    print(translator.format_output(results))
